@@ -1,0 +1,27 @@
+class Delegation
+types
+	public DelegationName = seq1 of char;
+	public LocationName = seq1 of char;
+	public UserSet = set of User;
+	public ProducerSet = set of Producer;
+	public UserBaskets = map User to Basket;
+	
+values
+-- TODO Define values here
+
+instance variables
+	public name: DelegationName;
+	public userCapacity: nat1;
+	public location: LocationName;
+	public users: UserSet;
+	public producers: ProducerSet;
+	public pendingUsers: UserSet := {};
+	public userBaskets: UserBaskets := { |-> };
+	
+operations
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Delegation
