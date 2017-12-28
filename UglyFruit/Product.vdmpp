@@ -9,7 +9,12 @@ instance variables
 	
 	
 operations
--- TODO Define operations here
+
+public Product : ProductName ==> Product
+Product(nm)==(
+name := nm;
+);
+
 functions
 -- TODO Define functiones here
 traces

@@ -19,7 +19,13 @@ instance variables
 	public userBaskets: UserBaskets := { |-> };
 	
 operations
--- TODO Define operations here
+
+public Delegation : DelegationName*LocationName ==> Delegation
+Delegation(nm,ln)==(
+name := nm;
+location := ln;
+);
+
 functions
 -- TODO Define functiones here
 traces

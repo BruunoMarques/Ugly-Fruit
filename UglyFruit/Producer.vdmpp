@@ -11,7 +11,12 @@ instance variables
 	public products: ProductSet := { |-> };
 	
 operations
--- TODO Define operations here
+
+public Producer : ProducerName ==> Producer
+Producer(nm)==(
+name := nm;
+);
+
 functions
 -- TODO Define functiones here
 traces

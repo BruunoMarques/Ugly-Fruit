@@ -11,7 +11,12 @@ instance variables
 	public user: User;
 	
 operations
--- TODO Define operations here
+
+public Basket : Size ==> Basket
+Basket(sz)==(
+size := sz;
+);
+
 functions
 -- TODO Define functiones here
 traces

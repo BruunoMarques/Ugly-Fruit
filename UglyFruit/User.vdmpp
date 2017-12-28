@@ -15,7 +15,12 @@ instance variables
 	public cancelBasket: bool := false;
 	
 operations
--- TODO Define operations here
+
+public User : Username ==> User
+User(nm)==(
+name := nm;
+);
+
 functions
 -- TODO Define functiones here
 traces
