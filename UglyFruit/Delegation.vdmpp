@@ -13,18 +13,24 @@ instance variables
 	public name: DelegationName;
 	public userCapacity: nat1;
 	public location: LocationName;
-	public users: UserSet;
-	public producers: ProducerSet;
+	public users: UserSet := {};
+	public producers: ProducerSet := {};
 	public pendingUsers: UserSet := {};
 	public userBaskets: UserBaskets := { |-> };
 	
 operations
 
-public Delegation : DelegationName*LocationName ==> Delegation
-Delegation(nm,ln)==(
-name := nm;
-location := ln;
-);
+public Delegation : DelegationName*LocationName*nat1 ==> Delegation
+	Delegation(nm,ln,uc)==(
+		name := nm;
+		location := ln;
+		userCapacity := uc;
+	);
+
+public registerUser (user: User) ==
+	if card users >= userCapacity
+	then pendingUsers := pendingUsers union {user}
+	else users := users union {user};
 
 functions
 -- TODO Define functiones here

@@ -16,10 +16,10 @@ instance variables
 	
 operations
 
-public User : Username ==> User
-User(nm)==(
-name := nm;
-);
+	public User : Username ==> User
+	User(nm)==(
+		name := nm;
+	);
 
 functions
 -- TODO Define functiones here
