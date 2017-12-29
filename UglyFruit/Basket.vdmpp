@@ -15,6 +15,7 @@ operations
 public Basket : Size ==> Basket
 Basket(sz)==(
 size := sz;
+return self
 );
 
 functions

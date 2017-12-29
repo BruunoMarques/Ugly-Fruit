@@ -25,12 +25,21 @@ public Delegation : DelegationName*LocationName*nat1 ==> Delegation
 		name := nm;
 		location := ln;
 		userCapacity := uc;
+		return self
 	);
-
+	
+	
 public registerUser (user: User) ==
 	if card users >= userCapacity
-	then pendingUsers := pendingUsers union {user}
-	else users := users union {user};
+	then (pendingUsers := pendingUsers union {user}; user.setDelegation(self))
+	else (users := users union {user}; user.setDelegation(self));
+
+
+public removeUser (user: User) ==
+  users := users  \ {user};
+
+public registerProducer (producer: Producer) == 
+	producers := producers union {producer};
 
 functions
 -- TODO Define functiones here

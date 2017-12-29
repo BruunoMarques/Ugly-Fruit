@@ -21,6 +21,11 @@ operations
 		delegations := delegations union {d2};
 		
 		d1.registerUser(u1);
+		IO`println(d1);
+		u1.delegationChange(d2);
+		IO`println(u1);
+		IO`println(d1);
+		IO`println(d2);
 	);
 functions
 -- TODO Define functiones here

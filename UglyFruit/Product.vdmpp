@@ -13,6 +13,7 @@ operations
 public Product : ProductName ==> Product
 Product(nm)==(
 name := nm;
+return self
 );
 
 functions

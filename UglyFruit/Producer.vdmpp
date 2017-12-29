@@ -15,6 +15,7 @@ operations
 public Producer : ProducerName ==> Producer
 Producer(nm)==(
 name := nm;
+return self
 );
 
 functions
