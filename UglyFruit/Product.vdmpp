@@ -7,14 +7,12 @@ values
 instance variables
 	public name: ProductName;
 	
-	
 operations
-
-public Product : ProductName ==> Product
-Product(nm)==(
-name := nm;
-return self
-);
+	public Product : ProductName ==> Product
+	Product(nm)==(
+		name := nm;
+	)
+	post name = nm;
 
 functions
 -- TODO Define functiones here

@@ -12,20 +12,29 @@ operations
 		dcl u1 : User := new User("Claudia");
 		dcl u2 : User := new User("Margarida");
 		dcl u3 : User := new User("Bruno");
-		dcl u4 : User := new User("Maria");
+		-- dcl u4 : User := new User("Maria");
 		
-		dcl d1 : Delegation := new Delegation("Delegation1", "Porto", 10);
+		dcl d1 : Delegation := new Delegation("Delegation1", "Porto", 2);
 		dcl d2 : Delegation := new Delegation("Delegation2", "Lisboa", 20);
 		
 		delegations := delegations union {d1};
 		delegations := delegations union {d2};
 		
-		d1.registerUser(u1);
-		IO`println(d1);
-		u1.delegationChange(d2);
-		IO`println(u1);
-		IO`println(d1);
-		IO`println(d2);
+		if d1.registerUser(u1)
+		then u1.setDelegation(d1);
+		
+		if d1.registerUser(u2)
+		then u2.setDelegation(d1);
+		
+		if d1.registerUser(u3)
+		then u3.setDelegation(d1);
+		
+		IO`print(d1.users);
+		IO`print("\n");
+		IO`print(d1.pendingUsers);
+		IO`print("\n");
+		IO`print("\n");
+		IO`print(u1.delegation);
 	);
 functions
 -- TODO Define functiones here

@@ -11,12 +11,11 @@ instance variables
 	public products: ProductSet := { |-> };
 	
 operations
-
-public Producer : ProducerName ==> Producer
-Producer(nm)==(
-name := nm;
-return self
-);
+	public Producer : ProducerName ==> Producer
+	Producer(nm)==(
+		name := nm;
+	)
+	post name = nm;
 
 functions
 -- TODO Define functiones here

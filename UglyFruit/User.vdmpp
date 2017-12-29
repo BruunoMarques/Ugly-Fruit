@@ -8,8 +8,8 @@ values
 
 instance variables
 	public name: Username;
-	public delegation: [Delegation];
-	public basketSize: Basket`Size; 
+	public delegation: [Delegation] := nil;
+	public basketSize: Basket`Size := nil; 
 	public paidFee: bool := false;
 	public receivedBaskets: nat := 0;
 	public cancelBasket: bool := false;
@@ -17,20 +17,16 @@ instance variables
 operations
 
 	public User : Username ==> User
-	User(nm)==(
-		name := nm;
-		return self
-	);
+		User(nm)==(
+			name := nm;
+		)
+		post name = nm;
 	
-	public setDelegation (de: Delegation) == (
-	 delegation := de;	
-	 receivedBaskets := 2;
-	 );
-	 
-	public delegationChange (de: Delegation) ==(
-		delegation.removeUser(self);
-		de.registerUser(self);
-	 )
+	public setDelegation : Delegation ==> ()
+		setDelegation(del)==(
+			delegation := del;
+		)
+		post delegation = del;
 
 functions
 -- TODO Define functiones here
