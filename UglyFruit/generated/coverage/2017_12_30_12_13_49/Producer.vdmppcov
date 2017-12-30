@@ -1,0 +1,24 @@
+class Producer
+types
+	public ProducerName = seq1 of char;
+	public Quantity = nat1;
+	public ProductSet = map Product to Quantity;
+
+values
+-- TODO Define values here
+instance variables
+	public name: ProducerName;
+	public products: ProductSet := { |-> };
+	
+operations
+	public Producer : ProducerName ==> Producer
+	Producer(nm)==(
+		name := nm;
+	)
+	post name = nm;
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Producer

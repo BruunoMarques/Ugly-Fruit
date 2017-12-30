@@ -27,16 +27,10 @@ operations
 		);
 		
 		if d1.registerUser(u2)
-		then (
-			u2.setDelegation(d1);
-			u2.chooseBasketSize(<small>);
-		);
+		then u2.setDelegation(d1);
 		
 		if d1.registerUser(u3)
-		then (
-			u3.setDelegation(d1);
-			u3.chooseBasketSize(<medium>);
-		);
+		then u3.setDelegation(d1);
 		
 		IO`print(d1.users);
 		IO`print("\n");

@@ -9,7 +9,7 @@ values
 instance variables
 	public name: Username;
 	public delegation: [Delegation] := nil;
-	public basketSize: Basket`Size; 
+	public basketSize: Basket`Size := nil; 
 	public paidFee: bool := false;
 	public receivedBaskets: nat := 0;
 	public cancelBasket: bool := false;
