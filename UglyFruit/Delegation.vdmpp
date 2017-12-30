@@ -26,23 +26,30 @@ operations
 			name := nm;
 			location := ln;
 			userCapacity := uc;
+			return self;
 		)
 		post name = nm and location = ln and userCapacity = uc;
 	
-	public registerUser : User ==> bool								-- retorna verdadeiro se o registo do utilizador foi bem sucedido
+	public registerUser : User ==> ()								-- retorna verdadeiro se o registo do utilizador foi bem sucedido
 		registerUser(user)==(
 			if card users >= userCapacity									-- se a capacidade de utilizadores da delegacao estiver no limite
-			then (
-				pendingUsers := pendingUsers union {user};	-- utilizador e acrescentado a lista de espera
-				return false;
-			)
-			else																					-- se a capacidade de utilizadores ainda nao tiver sido excedida
-			(
-				users := users union {user};								-- utilizador e registado com sucesso
-				return true;
-			)
+			then (pendingUsers := pendingUsers union {user}; user.setDelegation(self))
+			else (users := users union {user}; user.setDelegation(self));
 		)
 		post card users <= userCapacity;
+		
+	public isUserRegistered : User ==> bool
+		isUserRegistered(user)==(
+			if user in set users
+			then return true
+			else return false;
+		);
+		
+	public removeUser (user: User) ==
+  	users := users  \ {user};
+
+	public registerProducer (producer: Producer) == 
+		producers := producers union {producer};
 		
 	public getUsers : () ==> UserSet
 		getUsers()==return users;

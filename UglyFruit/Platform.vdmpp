@@ -53,28 +53,29 @@ operations
 		delegations := delegations union {d1};
 		delegations := delegations union {d2};
 		
-		if d1.registerUser(u1)
+		d1.registerUser(u1);
+		d1.registerUser(u2);
+		d1.registerUser(u3);
+		d2.registerUser(u4);
+		
+		if d1.isUserRegistered(u1)
 		then  (
-			u1.setDelegation(d1);
 			u1.setBasketSize(<medium>);
 		);
 		
-		if d1.registerUser(u2)
+		if d1.isUserRegistered(u2)
 		then (
-			u2.setDelegation(d1);
 			u2.setUsername("Arwen");
 			u2.setBasketSize(<small>);
 		);
 		
-		if d1.registerUser(u3)
+		if d1.isUserRegistered(u3)
 		then (
-			u3.setDelegation(d1);
 			u3.setBasketSize(<medium>);
 		);
 		
-		if d2.registerUser(u4)
+		if d2.isUserRegistered(u4)
 		then (
-			u4.setDelegation(d2);
 			u4.setBasketSize(<small>);
 		);
 		
@@ -86,6 +87,13 @@ operations
 		
 		IO`print("\n\nUsers in Delegation2: ");
 		IO`print(d2.getUsers());
+		IO`println("\n\n");
+		
+		IO`println(d1);
+		u1.delegationChange(d2);
+		IO`println(u1);
+		IO`println(d1);
+		IO`println(d2);
 	);
 functions
 -- TODO Define functiones here

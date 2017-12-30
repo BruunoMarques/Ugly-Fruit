@@ -19,6 +19,7 @@ operations
 	public User : Username ==> User
 		User(nm)==(
 			name := nm;
+			return self;
 		)
 		pre len nm <= 15					-- username nao pode ter mais que 15 caracteres
 		post name = nm;
@@ -42,6 +43,11 @@ operations
 		)
 		pre bs = <small> or bs = <medium>
 		post basketSize = bs;
+		
+	public delegationChange (de: Delegation) ==(
+		delegation.removeUser(self);
+		de.registerUser(self);
+	 );
 
 functions
 -- TODO Define functiones here
