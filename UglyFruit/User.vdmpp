@@ -7,12 +7,12 @@ values
 -- TODO Define values here
 
 instance variables
-	public name: Username;
-	public delegation: [Delegation] := nil;
-	public basketSize: Basket`Size; 
-	public paidFee: bool := false;
-	public receivedBaskets: nat := 0;
-	public cancelBasket: bool := false;
+	private name: Username;
+	private delegation: [Delegation] := nil;
+	private basketSize: Basket`Size; 
+	private paidFee: bool := false;
+	private receivedBaskets: nat := 0;
+	private cancelBasket: bool := false;
 	
 operations
 
@@ -20,7 +20,15 @@ operations
 		User(nm)==(
 			name := nm;
 		)
+		pre len nm <= 15					-- username nao pode ter mais que 15 caracteres
 		post name = nm;
+		
+	public setUsername : Username ==> ()
+		setUsername(us)==(
+			name := us;
+		)
+		pre len us <= 15
+		post name = us;
 	
 	public setDelegation : Delegation ==> ()
 		setDelegation(del)==(
@@ -28,10 +36,12 @@ operations
 		)
 		post delegation = del;
 		
-	public chooseBasketSize : Basket`Size ==> ()
-		chooseBasketSize(bs)==(
+	public setBasketSize : Basket`Size ==> ()
+		setBasketSize(bs)==(
 			basketSize := bs;
-		);
+		)
+		pre bs = <small> or bs = <medium>
+		post basketSize = bs;
 
 functions
 -- TODO Define functiones here

@@ -9,13 +9,23 @@ instance variables
 operations
 	public static main() == (
 		dcl delegations: DelegationSet := {};
+		
 		dcl u1 : User := new User("Claudia");
 		dcl u2 : User := new User("Margarida");
 		dcl u3 : User := new User("Bruno");
-		-- dcl u4 : User := new User("Maria");
+		dcl u4 : User := new User("Duarte");
 		
 		dcl d1 : Delegation := new Delegation("Delegation1", "Porto", 2);
 		dcl d2 : Delegation := new Delegation("Delegation2", "Lisboa", 20);
+		
+		dcl p1 : Product := new Product("Morango");
+		dcl p2 : Product := new Product("Batata doce");
+		dcl p3 : Product := new Product("Tomate");
+		dcl p4 : Product := new Product("Pepino");
+		dcl p5 : Product := new Product("Couve");
+		dcl p6 : Product := new Product("Rabanete");
+		dcl p7 : Product := new Product("Ameixa");
+		dcl p8 : Product := new Product("Uva");
 		
 		delegations := delegations union {d1};
 		delegations := delegations union {d2};
@@ -23,27 +33,33 @@ operations
 		if d1.registerUser(u1)
 		then  (
 			u1.setDelegation(d1);
-			u1.chooseBasketSize(<medium>);
+			u1.setBasketSize(<medium>);
 		);
 		
 		if d1.registerUser(u2)
 		then (
 			u2.setDelegation(d1);
-			u2.chooseBasketSize(<small>);
+			u2.setUsername("Arwen");
+			u2.setBasketSize(<small>);
 		);
 		
 		if d1.registerUser(u3)
 		then (
 			u3.setDelegation(d1);
-			u3.chooseBasketSize(<medium>);
+			u3.setBasketSize(<medium>);
 		);
 		
-		IO`print(d1.users);
-		IO`print("\n");
-		IO`print(d1.pendingUsers);
-		IO`print("\n");
-		IO`print("\n");
-		IO`print(u1.delegation);
+		if d2.registerUser(u4)
+		then (
+			u4.setDelegation(d2);
+			u4.setBasketSize(<small>);
+		);
+		
+		IO`print("Users in Delegation1: ");
+		IO`print(d1.getUsers());
+		
+		IO`print("\nPending users in Delegation1: ");
+		IO`print(d1.getPendingUsers());
 	);
 functions
 -- TODO Define functiones here

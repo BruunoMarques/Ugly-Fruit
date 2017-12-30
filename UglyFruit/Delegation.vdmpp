@@ -10,13 +10,13 @@ values
 -- TODO Define values here
 
 instance variables
-	public name: DelegationName;
-	public userCapacity: nat1;
-	public location: LocationName;
-	public users: UserSet := {};
-	public producers: ProducerSet := {};
-	public pendingUsers: UserSet := {};
-	public userBaskets: UserBaskets := { |-> };
+	private name: DelegationName;
+	private userCapacity: nat1;
+	private location: LocationName;
+	private users: UserSet := {};
+	private producers: ProducerSet := {};
+	private pendingUsers: UserSet := {};
+	private userBaskets: UserBaskets := { |-> };
 	inv card users <= userCapacity;							-- a capacidade de utilizadores registados na delegacao nunca pode ser excedida
 	
 operations
@@ -43,6 +43,12 @@ operations
 			)
 		)
 		post card users <= userCapacity;
+		
+	public getUsers : () ==> UserSet
+		getUsers()==return users;
+		
+	public getPendingUsers : () ==> UserSet
+		getPendingUsers()==return pendingUsers;
 
 functions
 -- TODO Define functiones here
