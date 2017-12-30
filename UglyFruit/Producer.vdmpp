@@ -16,6 +16,13 @@ operations
 		name := nm;
 	)
 	post name = nm;
+	
+	public addProduct : Product*nat1 ==> ()
+	addProduct(product, weight)==(
+		if product in set dom products
+		then products(product) := products(product) + weight
+		else products := products munion { product |-> weight }
+	);
 
 functions
 -- TODO Define functiones here

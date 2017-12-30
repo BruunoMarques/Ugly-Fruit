@@ -27,6 +27,29 @@ operations
 		dcl p7 : Product := new Product("Ameixa");
 		dcl p8 : Product := new Product("Uva");
 		
+		dcl producer1 : Producer := new Producer("Diana");
+		dcl producer2 : Producer := new Producer("Carvalhais");
+		dcl producer3 : Producer := new Producer("Hugo");
+		
+		producer1.addProduct(p1, 10);
+		producer1.addProduct(p1, 8);
+		producer1.addProduct(p2, 5);
+		producer2.addProduct(p3, 20);
+		producer2.addProduct(p4, 10);
+		producer2.addProduct(p5, 15);
+		producer2.addProduct(p6, 13);
+		producer3.addProduct(p7,3);
+		producer3.addProduct(p8,6);
+		
+		IO`print("Producer1: ");
+		IO`print(producer1);
+		
+		IO`print("\nProducer2: ");
+		IO`print(producer2);
+		
+		IO`print("\nProducer3: ");
+		IO`print(producer3);
+		IO`print("\n");
 		delegations := delegations union {d1};
 		delegations := delegations union {d2};
 		
@@ -55,11 +78,14 @@ operations
 			u4.setBasketSize(<small>);
 		);
 		
-		IO`print("Users in Delegation1: ");
+		IO`print("\nUsers in Delegation1: ");
 		IO`print(d1.getUsers());
 		
 		IO`print("\nPending users in Delegation1: ");
 		IO`print(d1.getPendingUsers());
+		
+		IO`print("\n\nUsers in Delegation2: ");
+		IO`print(d2.getUsers());
 	);
 functions
 -- TODO Define functiones here
