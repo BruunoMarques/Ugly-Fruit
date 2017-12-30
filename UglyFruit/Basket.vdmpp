@@ -1,6 +1,6 @@
 class Basket
 types
-	public Size = <small> | <medium>;
+	public Size = <small> | <large>;
 	public ProductSet = set of Product;
 
 values

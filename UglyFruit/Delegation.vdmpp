@@ -30,11 +30,18 @@ operations
 		)
 		post name = nm and location = ln and userCapacity = uc;
 	
-	public registerUser : User ==> ()								-- retorna verdadeiro se o registo do utilizador foi bem sucedido
-		registerUser(user)==(
-			if card users >= userCapacity									-- se a capacidade de utilizadores da delegacao estiver no limite
-			then (pendingUsers := pendingUsers union {user}; user.setDelegation(self))
-			else (users := users union {user}; user.setDelegation(self));
+	public registerUser : User*Basket`Size ==> ()								-- retorna verdadeiro se o registo do utilizador foi bem sucedido
+		registerUser(user, basketSize)==(
+			if card users >= userCapacity								-- se a capacidade de utilizadores da delegacao estiver no limite
+			then (
+				pendingUsers := pendingUsers union {user};
+				user.removeDelegation();
+			)
+			else (
+				users := users union {user};
+				user.setBasketSize(basketSize);
+				user.setDelegation(self);
+			);
 		)
 		post card users <= userCapacity;
 		
@@ -45,8 +52,8 @@ operations
 			else return false;
 		);
 		
-	public removeUser (user: User) ==
-  	users := users  \ {user};
+	public removeUser(user: User) ==
+  	users := users \ {user};
 
 	public registerProducer (producer: Producer) == 
 		producers := producers union {producer};
