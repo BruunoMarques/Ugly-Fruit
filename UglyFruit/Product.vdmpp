@@ -5,15 +5,17 @@ types
 values
 -- TODO Define values here
 instance variables
-	private name: ProductName;
+	public name: ProductName;
+	public minWeight: real;
 	
 operations
-	public Product : ProductName ==> Product
-	Product(nm)==(
+	public Product : ProductName*real ==> Product
+	Product(nm, mw)==(
 		name := nm;
-		return self
+		minWeight := mw;
+		return self;
 	)
-	post name = nm;
+	post name = nm and minWeight = mw;
 
 functions
 -- TODO Define functiones here

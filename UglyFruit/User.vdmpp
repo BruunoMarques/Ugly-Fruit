@@ -41,13 +41,20 @@ operations
 		setBasketSize(bs)==(
 			basketSize := bs;
 		)
-		pre bs = <small> or bs = <medium>
+		pre bs = <small> or bs = <large>
 		post basketSize = bs;
 		
-	public delegationChange (de: Delegation) ==(
+	public delegationChange (de: Delegation, bs: Basket`Size) == (
 		delegation.removeUser(self);
-		de.registerUser(self);
-	 );
+		de.registerUser(self, bs);
+	 )
+	 pre delegation <> nil
+	 post delegation = de;
+	 
+	 public removeDelegation() == (
+	 	delegation := nil;
+	 )
+	 post delegation = nil;
 
 functions
 -- TODO Define functiones here

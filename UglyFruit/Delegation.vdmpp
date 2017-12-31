@@ -3,6 +3,7 @@ types
 	public DelegationName = seq1 of char;
 	public LocationName = seq1 of char;
 	public UserSet = set of User;
+	public ProductSet = set of Product;
 	public ProducerSet = set of Producer;
 	public UserBaskets = map User to Basket;
 	
@@ -10,13 +11,14 @@ values
 -- TODO Define values here
 
 instance variables
-	private name: DelegationName;
-	private userCapacity: nat1;
-	private location: LocationName;
-	private users: UserSet := {};
-	private producers: ProducerSet := {};
-	private pendingUsers: UserSet := {};
-	private userBaskets: UserBaskets := { |-> };
+	public name: DelegationName;
+	public userCapacity: nat1;
+	public location: LocationName;
+	public users: UserSet := {};
+	public producers: ProducerSet := {};
+	public products: ProductSet := {};
+	public pendingUsers: UserSet := {};
+	public userBaskets: UserBaskets := { |-> };
 	inv card users <= userCapacity;							-- a capacidade de utilizadores registados na delegacao nunca pode ser excedida
 	
 operations
@@ -30,13 +32,20 @@ operations
 		)
 		post name = nm and location = ln and userCapacity = uc;
 	
-	public registerUser : User ==> ()								-- retorna verdadeiro se o registo do utilizador foi bem sucedido
-		registerUser(user)==(
-			if card users >= userCapacity									-- se a capacidade de utilizadores da delegacao estiver no limite
-			then (pendingUsers := pendingUsers union {user}; user.setDelegation(self))
-			else (users := users union {user}; user.setDelegation(self));
+	public registerUser : User*Basket`Size ==> ()								-- retorna verdadeiro se o registo do utilizador foi bem sucedido
+		registerUser(user, basketSize)==(
+			if card users >= userCapacity														-- se a capacidade de utilizadores da delegacao estiver no limite
+			then (
+				pendingUsers := pendingUsers union {user};
+				user.removeDelegation();
+			)
+			else (
+				users := users union {user};
+				user.setBasketSize(basketSize);
+				user.setDelegation(self);
+			);
 		)
-		post card users <= userCapacity;
+		post card users <= userCapacity and (user in set users or user in set pendingUsers);
 		
 	public isUserRegistered : User ==> bool
 		isUserRegistered(user)==(
@@ -45,17 +54,29 @@ operations
 			else return false;
 		);
 		
-	public removeUser (user: User) ==
-  	users := users  \ {user};
+	public removeUser(user: User) ==
+  	users := users \ {user}
+  	pre users <> {} and user in set users
+  	post user not in set users;
 
 	public registerProducer (producer: Producer) == 
-		producers := producers union {producer};
-		
-	public getUsers : () ==> UserSet
-		getUsers()==return users;
-		
-	public getPendingUsers : () ==> UserSet
-		getPendingUsers()==return pendingUsers;
+		producers := producers union {producer}
+		pre producer not in set producers
+		post producers <> {};
+	
+	public getProducts : () ==> ProductSet
+		getProducts()==(
+			dcl P : ProductSet;
+			for all p in set producers do
+				(
+				for all q in set dom p.products do
+					(
+						P := P union {q};
+					);
+				);
+					
+			return P;
+		);
 		
 	public pure getMaxWeight : () ==> nat
 	getMaxWeight()==
@@ -81,6 +102,7 @@ functions
 		else 8 + getrequiredWeight(users\{u})
 		);
 		
+
 
 traces
 -- TODO Define Combinatorial Test Traces here

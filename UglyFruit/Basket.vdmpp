@@ -1,14 +1,16 @@
 class Basket
 types
-	public Size = <small> | <medium>;
-	public ProductSet = set of Product;
+	public Size = <small> | <large>;
+	public Weight = nat1;
+	public ProductSet = map Product to Weight;
 
 values
 -- TODO Define values here
 instance variables
-	private size: Size;
-	private products: ProductSet := {};
-	private user: [User] := nil;
+	public size: Size;
+	public products: ProductSet := { |-> };
+	public user: [User] := nil;
+	public WeightValues : set of nat1 := {0.5, 1, 2, 3};
 	
 operations
 
