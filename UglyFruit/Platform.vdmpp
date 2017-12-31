@@ -59,13 +59,13 @@ operations
 		d2.registerUser(u4, <small>);
 		
 		IO`print("\nUsers in Delegation1: ");
-		IO`print(d1.getUsers());
+		IO`print(d1.users);
 		
 		IO`print("\nPending users in Delegation1: ");
-		IO`print(d1.getPendingUsers());
+		IO`print(d1.pendingUsers);
 		
 		IO`print("\n\nUsers in Delegation2: ");
-		IO`print(d2.getUsers());
+		IO`print(d2.users);
 		IO`println("\n");
 		
 		IO`println(u1);
