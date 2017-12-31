@@ -1,7 +1,7 @@
 class Producer
 types
 	public ProducerName = seq1 of char;
-	public Weight = nat1;
+	public Weight = real;
 	public ProductSet = map Product to Weight;
 
 values
@@ -18,12 +18,13 @@ operations
 	)
 	post name = nm;
 	
-	public addProduct : Product*nat1 ==> ()
+	public addProduct : Product*real ==> ()
 	addProduct(product, weight)==(
 		if product in set dom products
 		then products(product) := products(product) + weight
 		else products := products munion { product |-> weight }
 	)
+	pre weight >= 0.5
 	post product in set dom products;
 	
 	public pure getWeight : () ==> nat

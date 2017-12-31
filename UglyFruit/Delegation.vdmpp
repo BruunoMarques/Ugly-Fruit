@@ -38,7 +38,6 @@ operations
 			if card users >= userCapacity														-- se a capacidade de utilizadores da delegacao estiver no limite
 			then (
 				pendingUsers := pendingUsers union {user};
-				user.removeDelegation();
 			)
 			else (
 				users := users union {user};
@@ -46,7 +45,7 @@ operations
 				user.setDelegation(self);
 			);
 		)
-		post card users <= userCapacity and (user in set users or user in set pendingUsers);
+		post card users <= userCapacity and (user in set users or user in set pendingUsers) and getUsersWeight() <= getMaxWeight();
 		
 	public isUserRegistered : User ==> bool
 		isUserRegistered(user)==(
@@ -60,21 +59,26 @@ operations
   	pre users <> {} and user in set users
   	post user not in set users;
 
-	public registerProducer (producer: Producer) == 
-		producers := producers union {producer}
+	public registerProducer : Producer ==> ()
+		registerProducer(producer)==(
+			producers := producers union {producer};
+			setProducts();
+		)
 		pre producer not in set producers
 		post producers <> {};
 	
-	public getProducts : () ==> ProductSet
-		getProducts()==(
-			for all p in set producers do (
-				for all q in set dom p.products do (
-					products := products munion { q |-> p.products(q)};
+	public setProducts : () ==> ()
+		setProducts()==(
+			dcl P : ProductSet := { |-> };
+			for all producer in set producers do (
+				for all product in set dom producer.products do (
+					if product in set dom P
+					then P(product) := P(product) + producer.products(product)
+					else P := P munion { product |-> producer.products(product)};
 				);
+				products := P;
 			);
-			return products;
-		)
-		post card dom products >= 8;
+		);
 		
 	public pure getMaxWeight : () ==> nat
 	getMaxWeight()==

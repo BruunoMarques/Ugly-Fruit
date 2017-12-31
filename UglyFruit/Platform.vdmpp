@@ -26,20 +26,39 @@ operations
 		dcl p6 : Product := new Product("Rabanete", 0.02);
 		dcl p7 : Product := new Product("Ameixa", 0.1);
 		dcl p8 : Product := new Product("Ananas", 1.0);
+		dcl p9 : Product := new Product("Laranja", 0.2);
 		
 		dcl producer1 : Producer := new Producer("Diana");
 		dcl producer2 : Producer := new Producer("Carvalhais");
 		dcl producer3 : Producer := new Producer("Hugo");
+		dcl producer4 : Producer := new Producer("Miguel");
 		
-		producer1.addProduct(p1, 10);
-		producer1.addProduct(p1, 8);
-		producer1.addProduct(p2, 5);
-		producer2.addProduct(p3, 20);
-		producer2.addProduct(p4, 10);
-		producer2.addProduct(p5, 15);
-		producer2.addProduct(p6, 13);
-		producer3.addProduct(p7,3);
-		producer3.addProduct(p8,6);
+		producer1.addProduct(p1, 10.0);
+		producer1.addProduct(p1, 8.0);
+		producer1.addProduct(p2, 5.0);
+		
+		producer2.addProduct(p2, 10.0);
+		producer2.addProduct(p3, 20.0);
+		producer2.addProduct(p4, 10.0);
+		producer2.addProduct(p5, 15.0);
+		producer2.addProduct(p6, 13.0);
+		
+		producer3.addProduct(p7, 3.0);
+		producer3.addProduct(p8, 6.0);
+		
+		producer4.addProduct(p1, 13.0);
+		producer4.addProduct(p2, 8.0);
+		producer4.addProduct(p3, 1.0);
+		producer4.addProduct(p4, 2.0);
+		producer4.addProduct(p5, 3.0);
+		producer4.addProduct(p6, 6.0);
+		producer4.addProduct(p7, 4.0);
+		producer4.addProduct(p9, 10.0);
+		
+		d1.registerProducer(producer1);
+		d1.registerProducer(producer2);
+		d1.registerProducer(producer3);
+		d2.registerProducer(producer4);
 		
 		IO`print("Producer1: ");
 		IO`print(producer1);
@@ -55,9 +74,7 @@ operations
 		
 		d1.registerUser(u1, <large>);
 		d1.registerUser(u2, <small>);
-		
 		d1.registerUser(u3, <large>);
-		
 		d2.registerUser(u4, <small>);
 		
 		IO`print("\nUsers in Delegation1: ");
@@ -70,28 +87,30 @@ operations
 		IO`print(d2.users);
 		IO`println("\n");
 		
+		IO`print("\nTesting delegation change from delegation1 to delegation2... ");
 		IO`println(u1);
 		IO`println(d1);
+		
 		u1.delegationChange(d2, <small>);
 		
-		IO`println("\n");
 		IO`println(u1);
 		IO`println(d1);
 		IO`println(d2);
+		IO`print("\nFinished testing delegation change.\n");
 		
-		
-		d1.registerProducer(producer1);
-		d1.registerProducer(producer2);
-		d1.registerProducer(producer3);
-		
+		IO`print("\nTesting producer and user weights... ");
 		IO`println(d1);
-						
+		IO`print("\nProducers");				
 		IO`println(producer1.getWeight());
 		IO`println(producer2.getWeight());
 		IO`println(d1.getMaxWeight());
+		IO`print("\nUsers");
 		IO`println(d1.getUsersWeight());
+		IO`print("\nFinished testing weights.\n");	
 		
-		IO`println(d1.getProducts());
+		IO`print("\nTesting set products...\n");
+		d1.setProducts();
+		IO`println(d1.products);
 	);
 	
 functions
