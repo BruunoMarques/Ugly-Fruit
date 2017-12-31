@@ -21,12 +21,12 @@ operations
 		dcl p1 : Product := new Product("Morango", 0.05);
 		dcl p2 : Product := new Product("Batata doce", 0.4);
 		dcl p3 : Product := new Product("Tomate", 0.2);
-		dcl p4 : Product := new Product("Pepino", 0.3);
+		dcl p4 : Product := new Product("Pepino", 0.8);
 		dcl p5 : Product := new Product("Couve", 1.1);
-		dcl p6 : Product := new Product("Rabanete", 0.02);
-		dcl p7 : Product := new Product("Ameixa", 0.1);
+		dcl p6 : Product := new Product("Rabanete", 0.5);
+		dcl p7 : Product := new Product("Ameixa", 0.5);
 		dcl p8 : Product := new Product("Ananas", 1.0);
-		dcl p9 : Product := new Product("Laranja", 0.2);
+		dcl p9 : Product := new Product("Laranja", 1.0);
 		
 		dcl producer1 : Producer := new Producer("Diana");
 		dcl producer2 : Producer := new Producer("Carvalhais");
@@ -77,17 +77,16 @@ operations
 		d1.registerUser(u3, <large>);
 		d2.registerUser(u4, <small>);
 		
-		IO`print("\nUsers in Delegation1: ");
-		IO`print(d1.users);
+		IO`println("\nUsers in Delegation1: ");
+		IO`println(d1.users);
 		
-		IO`print("\nPending users in Delegation1: ");
-		IO`print(d1.pendingUsers);
+		IO`println("\nPending users in Delegation1: ");
+		IO`println(d1.pendingUsers);
 		
-		IO`print("\n\nUsers in Delegation2: ");
-		IO`print(d2.users);
-		IO`println("\n");
+		IO`println("\n\nUsers in Delegation2: ");
+		IO`println(d2.users);
 		
-		IO`print("\nTesting delegation change from delegation1 to delegation2... ");
+		IO`println("\nTesting delegation change from delegation1 to delegation2...");
 		IO`println(u1);
 		IO`println(d1);
 		
@@ -96,19 +95,20 @@ operations
 		IO`println(u1);
 		IO`println(d1);
 		IO`println(d2);
-		IO`print("\nFinished testing delegation change.\n");
+		IO`println("Finished testing delegation change.");
 		
-		IO`print("\nTesting producer and user weights... ");
+		IO`println("\nTesting producer and user weights... ");
 		IO`println(d1);
-		IO`print("\nProducers");				
+		IO`println("Producers");				
 		IO`println(producer1.getWeight());
 		IO`println(producer2.getWeight());
+		IO`println(producer3.getWeight());
 		IO`println(d1.getMaxWeight());
-		IO`print("\nUsers");
+		IO`println("\nUsers");
 		IO`println(d1.getUsersWeight());
-		IO`print("\nFinished testing weights.\n");	
+		IO`println("Finished testing weights.");	
 		
-		IO`print("\nTesting set products...\n");
+		IO`println("\nTesting set products...");
 		d1.setProducts();
 		IO`println(d1.products);
 	);

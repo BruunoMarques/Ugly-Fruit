@@ -3,7 +3,7 @@ types
 	public DelegationName = seq1 of char;
 	public LocationName = seq1 of char;
 	public UserSet = set of User;
-	public Weight = nat1;
+	public Weight = real;
 	public ProductSet = map Product to Weight;
 	public ProducerSet = set of Producer;
 	public UserBaskets = map User to Basket;
@@ -35,7 +35,10 @@ operations
 	
 	public registerUser : User*Basket`Size ==> ()								-- retorna verdadeiro se o registo do utilizador foi bem sucedido
 		registerUser(user, basketSize)==(
-			if card users >= userCapacity														-- se a capacidade de utilizadores da delegacao estiver no limite
+			dcl tmp : User := new User("tmp");
+			tmp.setBasketSize(<large>);					-- verifica se a delegacao tem capacidade para satisfazer os pedidos de cestas de utilizadores
+			
+			if ((card users >= userCapacity) or (getrequiredWeight(users union {tmp}) > getMaxWeight()))
 			then (
 				pendingUsers := pendingUsers union {user};
 			)

@@ -1,13 +1,14 @@
 class Basket
 types
 	public Size = <small> | <large>;
-	public Weight = nat1;
+	public Weight = real;
 	public ProductSet = map Product to Weight;
 
 values
 -- TODO Define values here
 instance variables
 	public size: Size;
+	public weight : Weight;
 	public products: ProductSet := { |-> };
 	public user: [User] := nil;
 	public WeightValues : set of nat1 := {0.5, 1, 2, 3};
@@ -20,6 +21,28 @@ operations
 			return self;
 		)
 		post size = sz;
+		
+	public addProduct : Product ==> ()
+		addProduct(product)==(	
+			if (size = <small>)
+			then (
+				if(product.minWeight > 0.5)
+					then products := products munion {product |-> 0.5}
+					else products := products munion {product |-> product.minWeight}
+			);
+			
+		);
+		
+		public updateWeight : ProductSet ==> ()
+			updateWeight(pds)==(
+				dcl tmp : real := 0;
+				
+				for all p in set dom pds do (
+					tmp := tmp + pds(p);
+				);
+				
+				weight := tmp;
+			);
 
 functions
 -- TODO Define functiones here
