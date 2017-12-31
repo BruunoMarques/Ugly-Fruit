@@ -11,7 +11,6 @@ instance variables
 	public weight : Weight;
 	public products: ProductSet := { |-> };
 	public user: [User] := nil;
-	public WeightValues : set of nat1 := {0.5, 1, 2, 3};
 	
 operations
 
@@ -22,28 +21,54 @@ operations
 		)
 		post size = sz;
 		
-	public addProduct : Product ==> ()
-		addProduct(product)==(	
+	public addProduct : Product ==> bool
+		addProduct(product)==(
+			dcl w : real := 0;
+			dcl pds : ProductSet := { |-> };
+			
+			if(product.minWeight > 0.5)
+				then w := 0.5
+				else w := product.minWeight;
+				
+			pds := products munion {product |-> w};
+		
 			if (size = <small>)
 			then (
-				if(product.minWeight > 0.5)
-					then products := products munion {product |-> 0.5}
-					else products := products munion {product |-> product.minWeight}
-			);
+				if (getWeight(pds) <= 4)
+				then (
+					if(product in set dom products)
+					then products(product) := products(product) + w
+					else products := pds;
+				) else return false;
+			) elseif (size = <large>)
+			then (
+				if (getWeight(pds) <= 8)
+				then(
+					if(product in set dom products)
+					then products(product) := products(product) + w
+					else products := pds;
+				) else return false;
+			)
+			else return false;
 			
+			setWeight(getWeight(products));
+			return true;
 		);
 		
-		public updateWeight : ProductSet ==> ()
-			updateWeight(pds)==(
+		public setWeight(w : real) ==
+			weight := w;
+
+		public getWeight : ProductSet ==> real
+			getWeight(pds)==(
 				dcl tmp : real := 0;
 				
 				for all p in set dom pds do (
 					tmp := tmp + pds(p);
 				);
 				
-				weight := tmp;
+				return tmp;
 			);
-
+			
 functions
 -- TODO Define functiones here
 traces

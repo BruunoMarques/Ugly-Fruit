@@ -89,8 +89,11 @@ operations
 		
 	public pure getUsersWeight : () ==> nat
 	getUsersWeight()==
-		getrequiredWeight(users);	
+		getrequiredWeight(users);
 		
+	public pure productsPerBasket: () ==> nat
+		productsPerBasket()==
+		checkVariety(products, card users, 0,0);
 
 functions		
 	public getProducerslWeight : ProducerSet -> nat
@@ -106,6 +109,14 @@ functions
 		if u.basketSize = <small> then 4 + getrequiredWeight(users\{u})
 		else 8 + getrequiredWeight(users\{u})
 		);
+		
+	public checkVariety : ProductSet*nat*nat*nat -> nat
+		checkVariety(products,basketNum, variety, rest)==(
+		  if products = {|->} then variety + floor (rest/basketNum)  
+			else let p in set dom products in 
+			if products(p) / p.minWeight >= basketNum then checkVariety({p} <-: products, basketNum, variety + 1, rest)
+			else checkVariety({p} <-: products, basketNum, variety, rest + floor(products(p) / p.minWeight)) 
+			);
 		
 traces
 -- TODO Define Combinatorial Test Traces here

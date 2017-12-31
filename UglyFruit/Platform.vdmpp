@@ -18,13 +18,13 @@ operations
 		dcl d1 : Delegation := new Delegation("Delegation1", "Porto", 2);
 		dcl d2 : Delegation := new Delegation("Delegation2", "Lisboa", 20);
 		
-		dcl p1 : Product := new Product("Morango", 0.05);
-		dcl p2 : Product := new Product("Batata doce", 0.4);
-		dcl p3 : Product := new Product("Tomate", 0.2);
+		dcl p1 : Product := new Product("Morango", 0.4);
+		dcl p2 : Product := new Product("Batata doce", 1.2);
+		dcl p3 : Product := new Product("Tomate", 0.8);
 		dcl p4 : Product := new Product("Pepino", 0.8);
-		dcl p5 : Product := new Product("Couve", 1.1);
+		dcl p5 : Product := new Product("Couve", 2.0);
 		dcl p6 : Product := new Product("Rabanete", 0.5);
-		dcl p7 : Product := new Product("Ameixa", 0.5);
+		dcl p7 : Product := new Product("Ameixa", 0.4);
 		dcl p8 : Product := new Product("Ananas", 1.0);
 		dcl p9 : Product := new Product("Laranja", 1.0);
 		
@@ -32,6 +32,27 @@ operations
 		dcl producer2 : Producer := new Producer("Carvalhais");
 		dcl producer3 : Producer := new Producer("Hugo");
 		dcl producer4 : Producer := new Producer("Miguel");
+		
+		dcl b1 : Basket := new Basket(<small>);
+		dcl b2 : Basket := new Basket(<large>);
+		
+		dcl res1 : bool := b1.addProduct(p1);
+		res1 := b1.addProduct(p3);
+		res1 := b1.addProduct(p4);
+		res1 := b1.addProduct(p5);
+		res1 := b1.addProduct(p6);
+		res1 := b1.addProduct(p7);
+		res1 := b1.addProduct(p8);
+		res1 := b1.addProduct(p5);
+		
+		res1 := b2.addProduct(p2);
+		
+		IO`println("BASKET TESTS...");
+		
+		IO`println(b1.products);
+		IO`println(b2.products);
+		IO`println(b1.getWeight(b1.products));
+		IO`println(b2.getWeight(b2.products));
 		
 		producer1.addProduct(p1, 10.0);
 		producer1.addProduct(p1, 8.0);
@@ -111,6 +132,8 @@ operations
 		IO`println("\nTesting set products...");
 		d1.setProducts();
 		IO`println(d1.products);
+		
+		
 	);
 	
 functions
