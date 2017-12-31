@@ -78,9 +78,32 @@ operations
 			return P;
 		);
 		
+	public pure getMaxWeight : () ==> nat
+	getMaxWeight()==
+		getProducerslWeight(producers);
+		
+	public pure getUsersWeight : () ==> nat
+	getUsersWeight()==
+		getrequiredWeight(users);	
+		
 
-functions
--- TODO Define functiones here
+functions		
+	public getProducerslWeight : ProducerSet -> nat
+	getProducerslWeight(producers)==(
+	  if producers = {} then 0
+		else let p in set producers in p.getWeight() + getProducerslWeight(producers\{p} ) 
+		);
+			    	            	
+	public getrequiredWeight : UserSet -> nat
+	getrequiredWeight(users)==(
+	  if users = {} then 0
+		else let u in set users in 
+		if u.basketSize = <small> then 4 + getrequiredWeight(users\{u})
+		else 8 + getrequiredWeight(users\{u})
+		);
+		
+
+
 traces
 -- TODO Define Combinatorial Test Traces here
 end Delegation

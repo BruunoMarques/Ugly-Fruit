@@ -76,6 +76,19 @@ operations
 		IO`println(u1);
 		IO`println(d1);
 		IO`println(d2);
+		
+		
+		d1.registerProducer(producer1);
+		d1.registerProducer(producer2);
+		
+				IO`println(d1);
+						
+		IO`println(producer1.getWeight());
+		IO`println(producer2.getWeight());
+		IO`println(d1.getMaxWeight());
+		
+				IO`println(d1.getUsers());
+		IO`println(d1.getUsersWeight());
 	);
 functions
 -- TODO Define functiones here

@@ -25,9 +25,18 @@ operations
 		else products := products munion { product |-> weight }
 	)
 	post product in set dom products;
+	
+	public pure getWeight : () ==> nat
+	getWeight()==
+		sumWeight(products);
 
-functions
--- TODO Define functiones here
+functions		
+	public sumWeight : ProductSet -> nat
+	sumWeight(products)==(
+	  if products = {|->} then 0
+		else let p in set dom products in products(p) + sumWeight({p} <-: products) 
+		)
+			
 traces
 -- TODO Define Combinatorial Test Traces here
 end Producer
