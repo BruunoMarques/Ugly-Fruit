@@ -3,7 +3,8 @@ types
 	public DelegationName = seq1 of char;
 	public LocationName = seq1 of char;
 	public UserSet = set of User;
-	public ProductSet = set of Product;
+	public Weight = nat1;
+	public ProductSet = map Product to Weight;
 	public ProducerSet = set of Producer;
 	public UserBaskets = map User to Basket;
 	
@@ -16,10 +17,10 @@ instance variables
 	public location: LocationName;
 	public users: UserSet := {};
 	public producers: ProducerSet := {};
-	public products: ProductSet := {};
+	public products: ProductSet := { |-> };
 	public pendingUsers: UserSet := {};
 	public userBaskets: UserBaskets := { |-> };
-	inv card users <= userCapacity;							-- a capacidade de utilizadores registados na delegacao nunca pode ser excedida
+	inv getUsersWeight() <= getMaxWeight();				-- a capacidade de utilizadores registados na delegacao nunca pode ser excedida
 	
 operations
 
@@ -66,17 +67,14 @@ operations
 	
 	public getProducts : () ==> ProductSet
 		getProducts()==(
-			dcl P : ProductSet;
-			for all p in set producers do
-				(
-				for all q in set dom p.products do
-					(
-						P := P union {q};
-					);
+			for all p in set producers do (
+				for all q in set dom p.products do (
+					products := products munion { q |-> p.products(q)};
 				);
-					
-			return P;
-		);
+			);
+			return products;
+		)
+		post card dom products >= 8;
 		
 	public pure getMaxWeight : () ==> nat
 	getMaxWeight()==
@@ -102,8 +100,6 @@ functions
 		else 8 + getrequiredWeight(users\{u})
 		);
 		
-
-
 traces
 -- TODO Define Combinatorial Test Traces here
 end Delegation

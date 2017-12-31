@@ -55,7 +55,9 @@ operations
 		
 		d1.registerUser(u1, <large>);
 		d1.registerUser(u2, <small>);
+		
 		d1.registerUser(u3, <large>);
+		
 		d2.registerUser(u4, <small>);
 		
 		IO`print("\nUsers in Delegation1: ");
@@ -80,16 +82,18 @@ operations
 		
 		d1.registerProducer(producer1);
 		d1.registerProducer(producer2);
+		d1.registerProducer(producer3);
 		
-				IO`println(d1);
+		IO`println(d1);
 						
 		IO`println(producer1.getWeight());
 		IO`println(producer2.getWeight());
 		IO`println(d1.getMaxWeight());
-		
-				IO`println(d1.getUsers());
 		IO`println(d1.getUsersWeight());
+		
+		IO`println(d1.getProducts());
 	);
+	
 functions
 -- TODO Define functiones here
 traces
