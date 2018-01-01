@@ -8,7 +8,7 @@ values
 -- TODO Define values here
 instance variables
 	public size: Size;
-	public weight : Weight;
+	public weight : Weight := 0;
 	public products: ProductSet := { |-> };
 	public user: [User] := nil;
 	
@@ -21,16 +21,13 @@ operations
 		)
 		post size = sz;
 		
-	public addProduct : Product ==> bool
-		addProduct(product)==(
-			dcl w : real := 0;
-			dcl pds : ProductSet := { |-> };
+	public addProduct : Product*real ==> ()
+		addProduct(product, w)==(
+			dcl pds : ProductSet := products;
 			
-			if(product.minWeight > 0.5)
-				then w := 0.5
-				else w := product.minWeight;
-				
-			pds := products munion {product |-> w};
+			if(product not in set dom products)
+			then pds := pds munion {product |-> w}
+			else pds(product) := pds(product) + w;
 		
 			if (size = <small>)
 			then (
@@ -39,7 +36,7 @@ operations
 					if(product in set dom products)
 					then products(product) := products(product) + w
 					else products := pds;
-				) else return false;
+				);
 			) elseif (size = <large>)
 			then (
 				if (getWeight(pds) <= 8)
@@ -47,12 +44,10 @@ operations
 					if(product in set dom products)
 					then products(product) := products(product) + w
 					else products := pds;
-				) else return false;
-			)
-			else return false;
+				);
+			);
 			
 			setWeight(getWeight(products));
-			return true;
 		)
 		post products <> { |-> };
 		

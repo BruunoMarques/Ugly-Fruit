@@ -43,6 +43,12 @@ operations
 			)
 			else (
 				users := users union {user};
+				
+				IO`print("Registered user ");
+				IO`print(user.name);
+				IO`print(" on delegation ");
+				IO`println(self.name);
+				
 				user.setBasketSize(basketSize);
 				user.setDelegation(self);
 			);
@@ -64,6 +70,10 @@ operations
 	public registerProducer : Producer ==> ()
 		registerProducer(producer)==(
 			producers := producers union {producer};
+			IO`print("Registered producer ");
+			IO`print(producer.name);
+			IO`print(" on delegation ");
+			IO`println(self.name);
 		)
 		pre producer not in set producers
 		post producers <> {};
@@ -81,20 +91,77 @@ operations
 			return P;
 		);
 		
+	public createBaskets : () ==> ()
+		createBaskets()==(
+			for all user in set users do (
+				dcl bsk : Basket := new Basket(user.basketSize);
+				dcl minWeight : real := 0;
+				dcl maxWeight : real := 0;
+				dcl variety : real := 0;
+				
+				if (user.basketSize = <small>)
+				then (minWeight := 3; maxWeight := 4; variety := 7)
+				else (minWeight := 6; maxWeight := 8; variety := 8);
+				
+				createBasketsAux(user, bsk, minWeight, maxWeight, variety);
+			);
+		);
+		
+		public createBasketsAux : User*Basket*real*real*real ==> ()
+			createBasketsAux(user, bsk, minWeight, maxWeight, variety)==(
+				dcl v : real := 0;
+				dcl variedProducts : set of Product := {};
+				
+				while(bsk.weight < minWeight or variety <> v) do (
+					for all producer in set producers do (
+						for all product in set dom producer.products do (
+							dcl w : real := 0.5;
+							dcl deletedWeight : real := 0;
+	
+							deletedWeight := producer.removeStock(product, w);
+							if (deletedWeight > 0)
+							then (
+								bsk.addProduct(product, deletedWeight);
+								
+								if (product not in set variedProducts)
+								then (variedProducts := variedProducts union {product}; v := v + 1);
+	
+								if(bsk.weight >= minWeight and bsk.weight <= maxWeight and variety = v)
+								then (
+									userBaskets := userBaskets munion {user |-> bsk};
+									
+									if user.basketSize = <small>
+									then IO`print("Small ")
+									else IO`print("Large ");
+									
+									IO`print("basket created for user ");
+									IO`print(user.name);
+									IO`print(" on delegation ");
+									IO`println(self.name);							
+									IO`println("Basket contents: ");
+									IO`println(bsk);
+									IO`println("");
+									
+									return);
+								);
+							);
+						);
+					);
+				);
+		
 /*	public removeProduct : Product*real ==> ()
 		removeProduct(product,val)==(
     products(product) := (products(product) - val); 
     )
     pre products(product)- val > 0
     post products(product) >= 0;
-*/
-    
+*/    
 	
-	public pure getMaxWeight : () ==> nat
+	public pure getMaxWeight : () ==> real
 	getMaxWeight()==
 		getProducerslWeight(producers);
 		
-	public pure getUsersWeight : () ==> nat
+	public pure getUsersWeight : () ==> real
 	getUsersWeight()==
 		getrequiredWeight(users);
 		
@@ -106,17 +173,17 @@ operations
 		);
 
 functions		
-	public getProducerslWeight : ProducerSet -> nat
+	public getProducerslWeight : ProducerSet -> real
 	getProducerslWeight(producers)==(
 	  if producers = {} then 0
 		else let p in set producers in p.getWeight() + getProducerslWeight(producers\{p} ) 
 		);
 			    	            	
-	public getrequiredWeight : UserSet -> nat
+	public getrequiredWeight : UserSet -> real
 	getrequiredWeight(users)==(
-	  if users = {} then 0
+	  if users = {} then 0.0
 		else let u in set users in 
-		if u.basketSize = <small> then 4 + getrequiredWeight(users\{u})
+		if u.basketSize = <small> then 4.0 + getrequiredWeight(users\{u})
 		else 8 + getrequiredWeight(users\{u})
 		);
 		
@@ -124,8 +191,8 @@ functions
 		checkVariety(products, basketNum, variety, rest)==(
 		  if products = {|->} then variety + floor (rest/basketNum)  
 			else let p in set dom products in 
-			if products(p) / p.minWeight >= basketNum then checkVariety({p} <-: products, basketNum, variety + 1, rest)
-			else checkVariety({p} <-: products, basketNum, variety, rest + floor(products(p) / p.minWeight)) 
+			if products(p) / 0.5 >= basketNum then checkVariety({p} <-: products, basketNum, variety + 1, rest)
+			else checkVariety({p} <-: products, basketNum, variety, rest + floor(products(p) / 0.5)) 
 			)
 			pre basketNum > 0;
 		

@@ -40,12 +40,12 @@ operations
 	)
 	pre weight > 0 and products <> { |-> };
 	
-	public pure getWeight : () ==> nat
+	public pure getWeight : () ==> real
 	getWeight()==
 		sumWeight(products);
 
 functions		
-	public sumWeight : ProductSet -> nat
+	public sumWeight : ProductSet -> real
 	sumWeight(products)==(
 	  if products = { |-> } then 0
 		else let p in set dom products in products(p) + sumWeight({p} <-: products) 

@@ -18,41 +18,29 @@ operations
 		dcl d1 : Delegation := new Delegation("Delegation1", "Porto", 2);
 		dcl d2 : Delegation := new Delegation("Delegation2", "Lisboa", 20);
 		
-		dcl p1 : Product := new Product("Morango", 0.4);
-		dcl p2 : Product := new Product("Batata doce", 1.2);
-		dcl p3 : Product := new Product("Tomate", 0.8);
-		dcl p4 : Product := new Product("Pepino", 0.8);
-		dcl p5 : Product := new Product("Couve", 2.0);
-		dcl p6 : Product := new Product("Rabanete", 0.5);
-		dcl p7 : Product := new Product("Ameixa", 0.4);
-		dcl p8 : Product := new Product("Ananas", 1.0);
-		dcl p9 : Product := new Product("Laranja", 1.0);
+		dcl p1 : Product := new Product("Morango");
+		dcl p2 : Product := new Product("Batata doce");
+		dcl p3 : Product := new Product("Tomate");
+		dcl p4 : Product := new Product("Pepino");
+		dcl p5 : Product := new Product("Couve");
+		dcl p6 : Product := new Product("Rabanete");
+		dcl p7 : Product := new Product("Ameixa");
+		dcl p8 : Product := new Product("Ananas");
 		
+		dcl p9 : Product := new Product("Laranja");
+		dcl p10 : Product := new Product("Beringela");
+		dcl p11 : Product := new Product("Castanha");
+		dcl p12 : Product := new Product("Ervilhas");
+		dcl p13 : Product := new Product("Salsa");
+		dcl p14 : Product := new Product("Grelos");
+		dcl p15 : Product := new Product("Toranja");
+		dcl p16 : Product := new Product("Melao");
+		
+				
 		dcl producer1 : Producer := new Producer("Diana");
 		dcl producer2 : Producer := new Producer("Carvalhais");
 		dcl producer3 : Producer := new Producer("Hugo");
 		dcl producer4 : Producer := new Producer("Miguel");
-		
-		dcl b1 : Basket := new Basket(<small>);
-		dcl b2 : Basket := new Basket(<large>);
-		
-		dcl res1 : bool := b1.addProduct(p1);
-		res1 := b1.addProduct(p3);
-		res1 := b1.addProduct(p4);
-		res1 := b1.addProduct(p5);
-		res1 := b1.addProduct(p6);
-		res1 := b1.addProduct(p7);
-		res1 := b1.addProduct(p8);
-		res1 := b1.addProduct(p5);
-		
-		res1 := b2.addProduct(p2);
-		
-		IO`println("BASKET TESTS...");
-		
-		IO`println(b1.products);
-		IO`println(b2.products);
-		IO`println(b1.getWeight(b1.products));
-		IO`println(b2.getWeight(b2.products));
 		
 		producer1.addProduct(p1, 10.0);
 		producer1.addProduct(p1, 8.0);
@@ -63,63 +51,53 @@ operations
 		producer2.addProduct(p4, 10.0);
 		producer2.addProduct(p5, 15.0);
 		producer2.addProduct(p6, 13.0);
-		
 		producer3.addProduct(p7, 3.0);
 		producer3.addProduct(p8, 6.0);
 		
-		producer4.addProduct(p1, 13.0);
-		producer4.addProduct(p2, 8.0);
-		producer4.addProduct(p3, 1.0);
-		producer4.addProduct(p4, 2.0);
-		producer4.addProduct(p5, 3.0);
-		producer4.addProduct(p6, 6.0);
-		producer4.addProduct(p7, 4.0);
 		producer4.addProduct(p9, 10.0);
+		producer4.addProduct(p10, 15.0);
+		producer4.addProduct(p11, 13.0);
+		producer4.addProduct(p12, 12.0);
+		producer4.addProduct(p13, 11.0);
+		producer4.addProduct(p14, 9.0);
+		producer4.addProduct(p15, 8.0);
+		producer4.addProduct(p16, 20.0);		
 		
 		d1.registerProducer(producer1);
 		d1.registerProducer(producer2);
 		d1.registerProducer(producer3);
 		d2.registerProducer(producer4);
 		
-		IO`print("Producer1: ");
-		IO`print(producer1);
-		
-		IO`print("\nProducer2: ");
-		IO`print(producer2);
-		
-		IO`print("\nProducer3: ");
-		IO`print(producer3);
-		IO`print("\n");
+		IO`println("");	
+				
 		delegations := delegations union {d1};
 		delegations := delegations union {d2};
 		
 		d1.registerUser(u1, <large>);
-		d1.registerUser(u2, <small>);
+		d1.registerUser(u2, <large>);
 		d1.registerUser(u3, <large>);
-		d2.registerUser(u4, <small>);
+		d2.registerUser(u4, <large>);
 		
-		IO`println("\nUsers in Delegation1: ");
-		IO`println(d1.users);
+		IO`print("\nUsers in Delegation1: ");
+		IO`println(card d1.users);
 		
-		IO`println("\nPending users in Delegation1: ");
-		IO`println(d1.pendingUsers);
+		IO`print("Pending users in Delegation1: ");
+		IO`println(card d1.pendingUsers);
 		
-		IO`println("\n\nUsers in Delegation2: ");
-		IO`println(d2.users);
+		IO`print("Users in Delegation2: ");
+		IO`println(card d2.users);
 		
-		IO`println("\nTesting delegation change from delegation1 to delegation2...");
-		IO`println(u1);
-		IO`println(d1);
-		
+		IO`println("\nTesting delegation change from delegation1 to delegation2...");		
 		u1.delegationChange(d2, <small>);
 		
-		IO`println(u1);
-		IO`println(d1);
-		IO`println(d2);
-		IO`println("Finished testing delegation change.");
+		IO`print(card d1.users);
+		IO`println(" users on delegation 1.");
+		IO`print(card d2.users);
+		IO`println(" users on delegation 2.");
 		
-		IO`println("\nTesting producer and user weights... ");
-		IO`println(d1);
+		IO`println("Finished testing delegation change.\n");
+		
+		IO`println("Testing producer and user weights... ");
 		IO`println("Producers");				
 		IO`println(producer1.getWeight());
 		IO`println(producer2.getWeight());
@@ -127,13 +105,10 @@ operations
 		IO`println(d1.getMaxWeight());
 		IO`println("\nUsers");
 		IO`println(d1.getUsersWeight());
-		IO`println("Finished testing weights.");	
+		IO`println("Finished testing weights.\n");
 		
-		IO`println(producer1.products);
-	  IO`println (producer1.removeStock(p1,20));
-		IO`println(producer1.products);
-		
-		
+		d1.createBaskets();		
+		d2.createBaskets();
 	);
 	
 functions
