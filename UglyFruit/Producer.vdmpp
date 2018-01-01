@@ -37,7 +37,10 @@ operations
 	addProduct(product, weight)==(
 		if product in set dom products
 		then products(product) := products(product) + weight
-		else products := products munion { product |-> weight }
+		else products := products munion { product |-> weight };
+		
+		if (delegation <> nil)
+		then delegation.checkPendingUsers();
 	)
 	pre weight >= 0.5
 	post product in set dom products;

@@ -44,19 +44,11 @@ operations
 		pre bs = <small> or bs = <large>
 		post basketSize = bs;
 		
-	public delegationChange (de: Delegation, bs: Basket`Size) == (
+	public delegationChange (de: Delegation, bs: Basket`Size) == (	
 		delegation.removeUser(self);
 		de.registerUser(self, bs);
-		
-		IO`print("Delegation changed to ");
-		IO`print(self.name);
-		IO`print(" from ");	
-		IO`print(delegation.name);
-		IO`print(" to ");
-		IO`println(de.name);
 	 )
-	 pre delegation <> nil
-	 post delegation = de;
+	 pre delegation <> nil;
 	 
 	 public removeDelegation() == (
 	 	delegation := nil;

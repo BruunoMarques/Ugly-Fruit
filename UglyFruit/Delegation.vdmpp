@@ -37,11 +37,19 @@ operations
 			dcl tmp : User := new User("tmp");
 			tmp.setBasketSize(<large>);															-- verifica se a delegacao tem capacidade para satisfazer os pedidos de cestas de utilizadores
 			
-			if ((card users >= userCapacity) or (getrequiredWeight(users union {tmp}) > getMaxWeight()) or productsPerBasket() < 8)
+			if ((card users >= userCapacity) or (getrequiredWeight(users union {tmp}) > getMaxWeight()) or productsPerBasket(card users + 1) < 8)
 			then (
+				user.setBasketSize(basketSize);
 				pendingUsers := pendingUsers union {user};
+				
+				IO`print("Pending user ");
+				IO`println(user.name);
+
 			)
 			else (
+				if(user in set pendingUsers)
+				then pendingUsers := pendingUsers \ {user};
+					
 				users := users union {user};
 				
 				IO`print("Registered user ");
@@ -74,10 +82,13 @@ operations
 		registerProducer(producer)==(
 			producer.setDelegation(self);
 			producers := producers union {producer};
+			
 			IO`print("Registered producer ");
 			IO`print(producer.name);
 			IO`print(" on delegation ");
 			IO`println(self.name);
+			
+			checkPendingUsers();
 		)
 		pre producer not in set producers and PlatformUtils`validateProducer(producer)
 		post producers <> {};
@@ -169,11 +180,16 @@ operations
 	getUsersWeight()==
 		getrequiredWeight(users);
 		
-	public productsPerBasket: () ==> nat
-		productsPerBasket()==(
-			if(card users > 0)
-				then checkVariety(getProducts(), card users, 8,0)
-				else return 8;
+	public productsPerBasket: nat ==> nat
+		productsPerBasket(basketNum)==(
+			checkVariety(getProducts(), basketNum, 0, 0);
+		);
+		
+	public checkPendingUsers: () ==> ()
+		checkPendingUsers()==(
+			for all user in set pendingUsers do (
+				registerUser(user, user.basketSize);
+			);
 		);
 
 functions		

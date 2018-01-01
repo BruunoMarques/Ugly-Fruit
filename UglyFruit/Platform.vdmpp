@@ -59,16 +59,13 @@ operations
 		producer4.addProduct(p11, 13.0);
 		producer4.addProduct(p12, 12.0);
 		producer4.addProduct(p13, 11.0);
-		producer4.addProduct(p14, 9.0);
-		producer4.addProduct(p15, 8.0);
-		producer4.addProduct(p16, 20.0);		
+	
 		
 		d1.registerProducer(producer1);
 		d1.registerProducer(producer2);
 		d1.registerProducer(producer3);
-		d2.registerProducer(producer3);
-		d2.registerProducer(producer4);
-		
+		-- d2.registerProducer(producer4);
+
 		IO`println("");	
 				
 		delegations := delegations union {d1};
@@ -76,7 +73,12 @@ operations
 		
 		d1.registerUser(u1, <large>);
 		d1.registerUser(u2, <large>);
-		d1.registerUser(u3, <large>);
+		d2.registerUser(u3, <large>);
+		d2.registerProducer(producer4);
+		
+		producer4.addProduct(p14, 9.0);
+		producer4.addProduct(p15, 8.0);
+		producer4.addProduct(p16, 20.0);
 		
 		IO`print("\nUsers in Delegation1: ");
 		IO`println(card d1.users);
@@ -86,6 +88,9 @@ operations
 		
 		IO`print("Users in Delegation2: ");
 		IO`println(card d2.users);
+		
+		IO`print("Pending users in Delegation2: ");
+		IO`println(d2.pendingUsers);
 		
 		IO`println("\nTesting delegation change from delegation1 to delegation2...");		
 		u1.delegationChange(d2, <small>);
