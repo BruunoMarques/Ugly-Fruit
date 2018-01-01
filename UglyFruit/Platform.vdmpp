@@ -129,8 +129,6 @@ operations
 		IO`println(d1.getUsersWeight());
 		IO`println("Finished testing weights.");	
 		
-		IO`println("\nTesting set products...");
-		d1.setProducts();
 		IO`println(producer1.products);
 	  IO`println (producer1.removeStock(p1,20));
 		IO`println(producer1.products);

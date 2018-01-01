@@ -30,12 +30,15 @@ operations
 	
 	public removeStock : Product*real ==> real
 	removeStock(product,weight)==(
-	dcl ret : Weight := 0;
-	if (product not in set dom products) then return ret
-	else if ((products(product)-weight) < 0) then ((ret := products(product));(products(product):=0); return ret)
-	else ((products(product):= (products(product) - weight));  return weight)
+		dcl ret : Weight := 0;
+		if (product not in set dom products)
+		then return ret
+		else
+			if ((products(product)-weight) < 0)
+			then ((ret := products(product)); (products(product):=0); return ret)
+			else ((products(product):= (products(product) - weight)); return weight)
 	)
-	pre weight > 0;
+	pre weight > 0 and products <> { |-> };
 	
 	public pure getWeight : () ==> nat
 	getWeight()==
@@ -44,9 +47,9 @@ operations
 functions		
 	public sumWeight : ProductSet -> nat
 	sumWeight(products)==(
-	  if products = {|->} then 0
+	  if products = { |-> } then 0
 		else let p in set dom products in products(p) + sumWeight({p} <-: products) 
-		)
+	);
 			
 traces
 -- TODO Define Combinatorial Test Traces here

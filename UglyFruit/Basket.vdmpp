@@ -53,10 +53,12 @@ operations
 			
 			setWeight(getWeight(products));
 			return true;
-		);
+		)
+		post products <> { |-> };
 		
 		public setWeight(w : real) ==
-			weight := w;
+			weight := w
+			post weight = w;
 
 		public getWeight : ProductSet ==> real
 			getWeight(pds)==(
@@ -67,7 +69,8 @@ operations
 				);
 				
 				return tmp;
-			);
+			)
+			pre pds <> { |-> };
 			
 functions
 -- TODO Define functiones here
