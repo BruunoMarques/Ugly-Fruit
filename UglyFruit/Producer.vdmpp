@@ -27,6 +27,16 @@ operations
 	pre weight >= 0.5
 	post product in set dom products;
 	
+	
+	public removeStock : Product*real ==> real
+	removeStock(product,weight)==(
+	dcl ret : Weight := 0;
+	if (product not in set dom products) then return ret
+	else if ((products(product)-weight) < 0) then ((ret := products(product));(products(product):=0); return ret)
+	else ((products(product):= (products(product) - weight));  return weight)
+	)
+	pre weight > 0;
+	
 	public pure getWeight : () ==> nat
 	getWeight()==
 		sumWeight(products);

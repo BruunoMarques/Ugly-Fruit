@@ -83,6 +83,15 @@ operations
 			);
 		);
 		
+	public removeProduct : Product*real ==> ()
+		removeProduct(product,val)==(
+    products(product) := (products(product) - val); 
+    )
+    pre products(product)- val > 0
+    post products(product) >= 0;
+    
+    
+	
 	public pure getMaxWeight : () ==> nat
 	getMaxWeight()==
 		getProducerslWeight(producers);
