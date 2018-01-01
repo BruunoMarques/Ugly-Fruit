@@ -4,12 +4,14 @@ types
 	public Weight = real;
 	public ProductSet = map Product to Weight;
 
+
 values
 -- TODO Define values here
 instance variables
 	public name: ProducerName;
 	public products: ProductSet := { |-> };
-	
+	public delegation:[Delegation] := nil;
+		
 operations
 	public Producer : ProducerName ==> Producer
 	Producer(nm)==(
@@ -17,6 +19,19 @@ operations
 		return self;
 	)
 	post name = nm;
+	
+	
+		public setDelegation : Delegation ==> ()
+		setDelegation(del)==(
+			delegation := del;
+		)
+		post delegation = del;
+	
+	 public removeDelegation() == (
+	 	delegation := nil;
+	 )
+	 pre delegation <> nil
+	 post delegation = nil;
 	
 	public addProduct : Product*real ==> ()
 	addProduct(product, weight)==(

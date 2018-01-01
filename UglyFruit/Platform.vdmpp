@@ -79,6 +79,7 @@ operations
 		d1.registerProducer(producer1);
 		d1.registerProducer(producer2);
 		d1.registerProducer(producer3);
+		d2.registerProducer(producer3);
 		d2.registerProducer(producer4);
 		
 		IO`print("Producer1: ");
@@ -96,6 +97,7 @@ operations
 		d1.registerUser(u1, <large>);
 		d1.registerUser(u2, <small>);
 		d1.registerUser(u3, <large>);
+		d2.registerUser(u3, <large>);
 		d2.registerUser(u4, <small>);
 		
 		IO`println("\nUsers in Delegation1: ");

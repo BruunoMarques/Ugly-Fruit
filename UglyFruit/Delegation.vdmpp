@@ -47,6 +47,7 @@ operations
 				user.setDelegation(self);
 			);
 		)
+		pre PlatformUtils`validateUser(user)
 		post card users <= userCapacity and (user in set users or user in set pendingUsers) and getUsersWeight() <= getMaxWeight();
 		
 	public isUserRegistered : User ==> bool
@@ -56,16 +57,19 @@ operations
 			else return false;
 		);
 		
-	public removeUser(user: User) ==
+	public removeUser(user: User) ==(
+	  user.removeDelegation();
   	users := users \ {user}
+  	)
   	pre users <> {} and user in set users
   	post user not in set users;
 
 	public registerProducer : Producer ==> ()
 		registerProducer(producer)==(
+			producer.setDelegation(self);
 			producers := producers union {producer};
 		)
-		pre producer not in set producers
+		pre producer not in set producers and PlatformUtils`validateProducer(producer)
 		post producers <> {};
 	
 	public getProducts : () ==> ProductSet

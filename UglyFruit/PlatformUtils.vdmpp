@@ -1,0 +1,26 @@
+class PlatformUtils
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+-- TODO Define operations here
+functions
+	
+	public validateUser : User -> bool
+	validateUser(user)==(
+	  if (user.delegation = nil) then true
+		else  false
+		);
+		
+		
+	public validateProducer : Producer -> bool
+	validateProducer(producer)==(
+	  if (producer.delegation = nil) then true
+		else  false
+		);
+traces
+-- TODO Define Combinatorial Test Traces here
+end PlatformUtils

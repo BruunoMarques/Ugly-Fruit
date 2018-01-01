@@ -54,6 +54,7 @@ operations
 	 public removeDelegation() == (
 	 	delegation := nil;
 	 )
+	 pre delegation <> nil
 	 post delegation = nil;
 
 functions
