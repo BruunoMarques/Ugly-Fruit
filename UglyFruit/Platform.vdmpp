@@ -36,10 +36,10 @@ operations
 		dcl p15 : Product := new Product("Toranja");
 		dcl p16 : Product := new Product("Melao");
 
-		dcl producer1 : Producer := new Producer("Diana");
-		dcl producer2 : Producer := new Producer("Carvalhais");
-		dcl producer3 : Producer := new Producer("Hugo");
-		dcl producer4 : Producer := new Producer("Miguel");
+		dcl producer1 : Producer := new Producer("Diana",{ |->});
+		dcl producer2 : Producer := new Producer("Carvalhais",{ |->});
+		dcl producer3 : Producer := new Producer("Hugo",{ |->});
+		dcl producer4 : Producer := new Producer("Miguel",{ |->});
 		
 		producer1.addProduct(p1, 10.0);
 		producer1.addProduct(p1, 8.0);

@@ -1,0 +1,79 @@
+class UserTest
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	 u1 : User := new User("Claudia");
+	 u2 : User := new User("Margarida");
+   d1 : Delegation := new Delegation("Delegation1", "Porto", 2);
+   d2 : Delegation := new Delegation("Delegation2", "Lisboa", 20); 
+   productsSet : Producer`ProductSet := {
+      new Product("Morango") |-> 10.0,
+			new Product("Batata doce") |-> 10.0,
+			new Product("Tomate") |-> 15.0,
+			new Product("Pepino")|-> 20,
+ 			new Product("Couve")|-> 20,
+			new Product("Rabanete")|-> 20,
+			new Product("Ameixa")|-> 20,
+			new Product("Ananas")|-> 20};
+	 p1 : Producer := new Producer("Diana",productsSet);
+	 p2 : Producer := new Producer("Manuel",productsSet);		 		
+   basketSizeSmall: Basket`Size := <small>;
+   basketSizeLarge: Basket`Size := <large>;   
+   products1: Producer`ProductSet := { |-> };
+   
+   
+   
+operations
+private userTest : () ==> ()
+		userTest() == (
+		--test Contructor
+		UtilsTest`assertTrue(u1.name = "Claudia");
+		
+		--test set Username
+		u1.setUsername("Ana");
+		UtilsTest`assertTrue(u1.name = "Ana");
+		
+		--test set Delegation
+		d1.registerProducer(p1);
+		d1.registerUser(u1,basketSizeSmall);
+		UtilsTest`assertTrue(u1.delegation = d1);
+		
+		--test set BasketSize
+		u1.setBasketSize(basketSizeSmall);
+		UtilsTest`assertTrue(u1.basketSize = basketSizeSmall);
+		u2.setBasketSize(basketSizeLarge);
+		UtilsTest`assertTrue(u2.basketSize = basketSizeLarge);
+		
+		--test set PayingValue
+		u1.setPayingValue(basketSizeSmall);
+		UtilsTest`assertTrue(u1.paidValue = 3.5);
+		u2.setPayingValue(basketSizeLarge);
+		UtilsTest`assertTrue(u2.paidValue = 7);	
+		
+		--test delegationChange
+		d2.registerProducer(p2);
+		u1.delegationChange(d2,basketSizeSmall);
+		UtilsTest`assertTrue(u1.delegation = d2);
+		
+		--test removeDelegation		
+		u1.removeDelegation();
+		UtilsTest`assertTrue(u1.delegation = nil);
+		
+		--test cancelBasket		
+		u1.setCancelBasket(true);
+		UtilsTest`assertTrue(u1.cancelBasket = true);		
+		u1.setCancelBasket(false);
+		UtilsTest`assertTrue(u1.cancelBasket = false);		
+);
+
+public static main: () ==> ()
+		main() == (
+			new UserTest().userTest();
+);
+functions
+
+traces
+-- TODO Define Combinatorial Test Traces here
+end UserTest

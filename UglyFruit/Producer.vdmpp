@@ -14,9 +14,10 @@ instance variables
 	public delegation:[Delegation] := nil;
 		
 operations
-	public Producer : ProducerName ==> Producer
-	Producer(nm)==(
+	public Producer : ProducerName*ProductSet ==> Producer
+	Producer(nm,p)==(
 		name := nm;
+		products := p;
 		return self;
 	)
 	post name = nm;

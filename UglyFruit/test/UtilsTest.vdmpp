@@ -1,0 +1,16 @@
+class UtilsTest
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public static assertTrue: bool ==> ()
+		assertTrue(cond) == return
+		pre cond;
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end UtilsTest
