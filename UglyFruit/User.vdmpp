@@ -10,9 +10,9 @@ instance variables
 	public name: Username;
 	public delegation: [Delegation] := nil;
 	public basketSize: Basket`Size; 
-	public paidFee: bool := false;
 	public receivedBaskets: nat := 0;
 	public cancelBasket: bool := false;
+	public paidValue: real := 0;
 	
 operations
 
@@ -43,6 +43,16 @@ operations
 		)
 		pre bs = <small> or bs = <large>
 		post basketSize = bs;
+		
+		
+	public setPayingValue : Basket`Size ==> ()
+		setPayingValue(bs)==(
+		receivedBaskets:= receivedBaskets + 1;
+		if(bs = <small>) then paidValue := paidValue + 3.5
+		else  paidValue := paidValue + 7
+		)
+		pre bs = <small> or bs = <large>;
+		
 		
 	public delegationChange (de: Delegation, bs: Basket`Size) == (	
 		delegation.removeUser(self);
