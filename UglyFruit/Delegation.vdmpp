@@ -73,6 +73,7 @@ operations
 		
 	public removeUser(user: User) ==(
 	  user.removeDelegation();
+	  checkPendingUsers();
   	users := users \ {user}
   	)
   	pre users <> {} and user in set users
@@ -144,7 +145,7 @@ operations
 								if(bsk.weight >= minWeight and bsk.weight <= maxWeight and variety = v)
 								then (
 									userBaskets := userBaskets munion {user |-> bsk};
-									
+									user.setPayingValue(user.basketSize);
 									if user.basketSize = <small>
 									then IO`print("Small ")
 									else IO`print("Large ");

@@ -114,6 +114,7 @@ operations
 		
 		d1.createBaskets();		
 		d2.createBaskets();
+		IO`println(u1);
 	);
 	
 functions
