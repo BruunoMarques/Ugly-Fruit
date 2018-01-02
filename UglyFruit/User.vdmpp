@@ -54,19 +54,22 @@ operations
 		pre bs = <small> or bs = <large>;
 		
 		
-	public delegationChange (de: Delegation, bs: Basket`Size) == (	
+	public delegationChange : Delegation*Basket`Size ==> ()	
+		delegationChange(de,bs) ==(
 		delegation.removeUser(self);
 		de.registerUser(self, bs);
 	 )
 	 pre delegation <> nil;
 	 
-	 public removeDelegation() == (
+	 public removeDelegation : () ==> ()
+	 removeDelegation() ==(
 	 	delegation := nil;
 	 )
 	 pre delegation <> nil
 	 post delegation = nil;
 	 
-	 public setCancelBasket(val : bool) == (
+	 public setCancelBasket : bool ==> ()
+	 setCancelBasket(val)==(
 	 	cancelBasket := val;
 	 )
 	 post cancelBasket = val;

@@ -9,6 +9,8 @@ operations
 		public static main: () ==> ()
 		 main() == (
 			UserTest`main();
+			ProductTest`main();
+			BasketTest`main();			
 		);
 functions
 -- TODO Define functiones here

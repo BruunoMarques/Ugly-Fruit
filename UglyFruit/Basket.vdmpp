@@ -51,8 +51,10 @@ operations
 		)
 		post products <> { |-> };
 		
-		public setWeight(w : real) ==
-			weight := w
+		public setWeight : real ==> ()
+		setWeight(w) == (
+			weight := w;
+			)
 			post weight = w;
 
 		public getWeight : ProductSet ==> real

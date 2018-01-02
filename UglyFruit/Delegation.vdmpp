@@ -130,7 +130,9 @@ operations
 			IO`println(self.name);
 			IO`println("");
 			restock();
-		);
+		)
+		pre users <> {} and producers <> {} and getUsersWeight() <= getMaxWeight() and productsPerBasket(card users) >= 8
+		post userBaskets <> { |-> };
 		
 		public createBasketsAux : User*Basket*real*real*real ==> ()
 			createBasketsAux(user, bsk, minWeight, maxWeight, variety)==(

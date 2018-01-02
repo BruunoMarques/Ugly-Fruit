@@ -1,0 +1,25 @@
+class ProductTest
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	 p1 : Product := new Product("Morango");
+operations
+
+private productTest : () ==> ()
+		productTest() == (
+		--test Contructor
+		UtilsTest`assertTrue(p1.name = "Morango");
+);
+
+public static main: () ==> ()
+		main() == (
+			new ProductTest().productTest();
+);
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end ProductTest

@@ -31,6 +31,12 @@ private userTest : () ==> ()
 		--test Contructor
 		UtilsTest`assertTrue(u1.name = "Claudia");
 		
+		--test cancelBasket		
+		u1.setCancelBasket(true);
+		UtilsTest`assertTrue(u1.cancelBasket = true);		
+		u1.setCancelBasket(false);
+		UtilsTest`assertTrue(u1.cancelBasket = false);				
+		
 		--test set Username
 		u1.setUsername("Ana");
 		UtilsTest`assertTrue(u1.name = "Ana");
@@ -56,16 +62,18 @@ private userTest : () ==> ()
 		d2.registerProducer(p2);
 		u1.delegationChange(d2,basketSizeSmall);
 		UtilsTest`assertTrue(u1.delegation = d2);
-		
-		--test removeDelegation		
-		u1.removeDelegation();
-		UtilsTest`assertTrue(u1.delegation = nil);
-		
+
 		--test cancelBasket		
 		u1.setCancelBasket(true);
 		UtilsTest`assertTrue(u1.cancelBasket = true);		
 		u1.setCancelBasket(false);
 		UtilsTest`assertTrue(u1.cancelBasket = false);		
+		
+		--test removeDelegation		
+		u1.removeDelegation();
+		UtilsTest`assertTrue(u1.delegation = nil);
+		
+
 );
 
 public static main: () ==> ()

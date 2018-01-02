@@ -1,0 +1,50 @@
+class BasketTest
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+
+   basketSizeSmall: Basket`Size := <small>;
+   basketSizeLarge: Basket`Size := <large>;   
+	 b1 : Basket := new Basket(basketSizeSmall);
+	 b2 : Basket := new Basket(basketSizeLarge);
+	 p1 : Product := new Product("Morango");
+	 p2 : Product := new Product("Batata doce");	 
+	 w : Basket`Weight := 3;
+	 productSetw : Basket`Weight := 20;
+   productsSet : Producer`ProductSet := { p1 |-> 10.0, p2 |-> 10.0};	 
+
+operations
+private basketTest : () ==> ()
+		basketTest() == (
+		
+		--test Contructor
+		UtilsTest`assertTrue(b1.size = basketSizeSmall);
+	  UtilsTest`assertTrue(b2.size = basketSizeLarge);
+		
+		--test addProduct		
+		b1.addProduct(p1,2);
+		b1.addProduct(p1,1.5);		
+		UtilsTest`assertTrue(p1 in set dom b1.products);		
+		b2.addProduct(p2,3);
+		b2.addProduct(p2,1.5);		
+		UtilsTest`assertTrue(p1 in set dom b1.products);	
+		
+		--test setWeight		
+		b1.setWeight(w);
+		UtilsTest`assertTrue(b1.weight = w);		
+		
+		--test getWeight		
+		UtilsTest`assertTrue(b1.getWeight(productsSet) = productSetw);						
+);
+
+public static main: () ==> ()
+		main() == (
+			new BasketTest().basketTest();
+);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end BasketTest
