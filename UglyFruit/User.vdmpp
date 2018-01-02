@@ -65,6 +65,11 @@ operations
 	 )
 	 pre delegation <> nil
 	 post delegation = nil;
+	 
+	 public setCancelBasket(val : bool) == (
+	 	cancelBasket := val;
+	 )
+	 post cancelBasket = val;
 
 functions
 -- TODO Define functiones here

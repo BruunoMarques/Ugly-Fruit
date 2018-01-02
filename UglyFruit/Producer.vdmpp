@@ -10,6 +10,7 @@ values
 instance variables
 	public name: ProducerName;
 	public products: ProductSet := { |-> };
+	public initialValues : ProductSet := { |-> };
 	public delegation:[Delegation] := nil;
 		
 operations
@@ -36,8 +37,13 @@ operations
 	public addProduct : Product*real ==> ()
 	addProduct(product, weight)==(
 		if product in set dom products
-		then products(product) := products(product) + weight
-		else products := products munion { product |-> weight };
+		then (
+			products(product) := products(product) + weight;
+			initialValues(product) := initialValues(product) + weight)
+		else (
+			products := products munion { product |-> weight }; 
+			initialValues := initialValues munion { product |-> weight }
+		);
 		
 		if (delegation <> nil)
 		then delegation.checkPendingUsers();
@@ -58,9 +64,15 @@ operations
 	)
 	pre weight > 0 and products <> { |-> };
 	
+	public restockProducts : () ==> ()
+		restockProducts()==(
+			products := initialValues;
+		);
+	
 	public pure getWeight : () ==> real
 	getWeight()==
 		sumWeight(products);
+		
 
 functions		
 	public sumWeight : ProductSet -> real
