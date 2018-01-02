@@ -35,8 +35,7 @@ operations
 		dcl p14 : Product := new Product("Grelos");
 		dcl p15 : Product := new Product("Toranja");
 		dcl p16 : Product := new Product("Melao");
-		
-				
+
 		dcl producer1 : Producer := new Producer("Diana");
 		dcl producer2 : Producer := new Producer("Carvalhais");
 		dcl producer3 : Producer := new Producer("Hugo");
@@ -113,7 +112,11 @@ operations
 		IO`println("Finished testing weights.\n");
 		
 		d1.createBaskets();		
-		d2.createBaskets();
+		d1.createBaskets();			
+		d1.createBaskets();
+		d1.createBaskets();
+		d1.createBaskets();		
+		IO`println("Finished testing cancel baskets...");
 	);
 	
 functions

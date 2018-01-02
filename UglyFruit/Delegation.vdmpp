@@ -118,8 +118,14 @@ operations
 				then (minWeight := 3; maxWeight := 4; variety := 7)
 				else (minWeight := 6; maxWeight := 8; variety := 8);
 				
-				createBasketsAux(user, bsk, minWeight, maxWeight, variety);
+				if user.cancelBasket = false
+				then createBasketsAux(user, bsk, minWeight, maxWeight, variety)
+				else user.setCancelBasket(false);
 			);
+			IO`print("RESTOCKING WAREHOUSE ON ");
+			IO`println(self.name);
+			IO`println("");
+			restock();
 		);
 		
 		public createBasketsAux : User*Basket*real*real*real ==> ()
@@ -143,7 +149,9 @@ operations
 	
 								if(bsk.weight >= minWeight and bsk.weight <= maxWeight and variety = v)
 								then (
-									userBaskets := userBaskets munion {user |-> bsk};
+									if (user in set dom userBaskets)
+									then userBaskets(user) := bsk
+									else userBaskets := userBaskets munion {user |-> bsk};
 									
 									if user.basketSize = <small>
 									then IO`print("Small ")
@@ -157,20 +165,20 @@ operations
 									IO`println(bsk);
 									IO`println("");
 									
-									return);
+									return
 								);
 							);
 						);
 					);
 				);
-		
-/*	public removeProduct : Product*real ==> ()
-		removeProduct(product,val)==(
-    products(product) := (products(product) - val); 
-    )
-    pre products(product)- val > 0
-    post products(product) >= 0;
-*/    
+			)
+			pre minWeight > 0 and maxWeight > 0 and variety > 0;
+			
+		public restock() == (
+			for all producer in set producers do(
+				producer.restockProducts();
+				);
+		);
 	
 	public pure getMaxWeight : () ==> real
 	getMaxWeight()==
