@@ -111,7 +111,11 @@ operations
 		IO`println(d1.getUsersWeight());
 		IO`println("Finished testing weights.\n");
 		
-		d1.createBaskets();		
+		d1.createBaskets();
+		u2.setCancelBasket(true);
+		IO`print("Canceled ");
+		IO`print(u2.name);
+		IO`println("'s basket...");
 		d1.createBaskets();			
 		d1.createBaskets();
 		d1.createBaskets();

@@ -59,7 +59,7 @@ operations
 	 public setCancelBasket(val : bool) == (
 	 	cancelBasket := val;
 	 )
-	 pre cancelBasket = val;
+	 post cancelBasket = val;
 
 functions
 -- TODO Define functiones here
