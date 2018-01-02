@@ -39,11 +39,14 @@ operations
 			
 			if ((card users >= userCapacity) or (getrequiredWeight(users union {tmp}) > getMaxWeight()) or productsPerBasket(card users + 1) < 8)
 			then (
-				user.setBasketSize(basketSize);
-				pendingUsers := pendingUsers union {user};
-				
-				IO`print("Pending user ");
-				IO`println(user.name);
+				if user not in set pendingUsers
+				then (
+					pendingUsers := pendingUsers union {user};
+					user.setBasketSize(basketSize);
+					
+					IO`print("Pending user ");
+					IO`println(user.name);
+				);
 
 			)
 			else (
@@ -61,9 +64,9 @@ operations
 				user.setDelegation(self);
 			);
 		)
-		pre PlatformUtils`validateUser(user)
-		post card users <= userCapacity and (user in set users or user in set pendingUsers) and getUsersWeight() <= getMaxWeight();
-		
+		pre PlatformUtils`validateUser(user) and user not in set users
+		post card users <= userCapacity and (user in set users or user in set pendingUsers) and getUsersWeight() <= getMaxWeight() and productsPerBasket(card users) >= 8;
+	
 	public isUserRegistered : User ==> bool
 		isUserRegistered(user)==(
 			if user in set users
@@ -94,7 +97,7 @@ operations
 		pre producer not in set producers and PlatformUtils`validateProducer(producer)
 		post producers <> {};
 	
-	public getProducts : () ==> ProductSet
+	public pure getProducts : () ==> ProductSet
 		getProducts()==(
 			dcl P : ProductSet := { |-> };
 			for all producer in set producers do (
@@ -190,9 +193,11 @@ operations
 	getUsersWeight()==
 		getrequiredWeight(users);
 		
-	public productsPerBasket: nat ==> nat
+	public pure productsPerBasket: nat ==> nat
 		productsPerBasket(basketNum)==(
-			checkVariety(getProducts(), basketNum, 0, 0);
+			if (basketNum = 0)
+			then return 8
+			else checkVariety(getProducts(), basketNum, 0, 0);
 		);
 		
 	public checkPendingUsers: () ==> ()
