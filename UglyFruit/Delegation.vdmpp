@@ -21,6 +21,8 @@ instance variables
 	public userBaskets: UserBaskets := { |-> };
 	inv getUsersWeight() <= getMaxWeight();
 	inv card users <= userCapacity;
+	inv card users > 0 => productsPerBasket(card users) >= 8;
+	inv card users > 0 => card producers > 0;	
 	
 operations
 
