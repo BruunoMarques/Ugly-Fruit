@@ -67,7 +67,11 @@ operations
 			);
 		)
 		pre PlatformUtils`validateUser(user) and user not in set users and card users < userCapacity
-		post card users <= userCapacity and (user in set users or user in set pendingUsers) and getUsersWeight() <= getMaxWeight() and productsPerBasket(card users) >= 8;
+		post (user in set users or user in set pendingUsers) 
+		and card users <= userCapacity 
+		and getUsersWeight() <= getMaxWeight() 
+		and productsPerBasket(card users) >= 8 
+		and if card users > 0 then card producers > 0 else card producers >= 0;
 		
 	public removeUser : User ==> ()
 	removeUser(user)==(
