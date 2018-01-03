@@ -28,6 +28,7 @@ operations
 		setDelegation(del)==(
 			delegation := del;
 		)
+		pre products <> { |-> }
 		post delegation = del;
 	
 	 public removeDelegation: () ==> ()
