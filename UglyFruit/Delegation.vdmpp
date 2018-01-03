@@ -19,7 +19,8 @@ instance variables
 	public producers: ProducerSet := {};
 	public pendingUsers: UserSet := {};
 	public userBaskets: UserBaskets := { |-> };
-	inv getUsersWeight() <= getMaxWeight();				-- a capacidade de utilizadores registados na delegacao nunca pode ser excedida
+	inv getUsersWeight() <= getMaxWeight();
+	inv card users <= userCapacity;
 	
 operations
 
@@ -41,8 +42,8 @@ operations
 			then (
 				if user not in set pendingUsers
 				then (
-					pendingUsers := pendingUsers union {user};
 					user.setBasketSize(basketSize);
+					pendingUsers := pendingUsers union {user};
 					
 					IO`print("Pending user ");
 					IO`println(user.name);
@@ -52,16 +53,15 @@ operations
 			else (
 				if(user in set pendingUsers)
 				then pendingUsers := pendingUsers \ {user};
-					
+				
+				user.setBasketSize(basketSize);
+				user.setDelegation(self);					
 				users := users union {user};
 				
 				IO`print("Registered user ");
 				IO`print(user.name);
 				IO`print(" on delegation ");
-				IO`println(self.name);
-				
-				user.setBasketSize(basketSize);
-				user.setDelegation(self);
+				IO`println(self.name);	
 			);
 		)
 		pre PlatformUtils`validateUser(user) and user not in set users
