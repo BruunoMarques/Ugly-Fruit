@@ -74,7 +74,6 @@ private delegationTest : () ==> ()
 		UtilsTest`assertTrue(d2.userBaskets <> { |-> });			
 		
 	-- test productsPerBasket;
-		UtilsTest`assertTrue(d1.productsPerBasket(0) = 8);		
 		UtilsTest`assertTrue(d1.productsPerBasket(card d1.users) <> 0);		
 		
 	-- test checkVariety;
