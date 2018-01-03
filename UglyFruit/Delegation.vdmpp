@@ -75,7 +75,7 @@ operations
 			);
 		)
 		pre PlatformUtils`validateUser(user) and user not in set users
-		post card users <= userCapacity and (user in set users or user in set pendingUsers) and getUsersWeight() <= getMaxWeight() and productsPerBasket(card users) >= 8;
+		post card users <= userCapacity and (user in set users or user in set pendingUsers) and getUsersWeight() <= getMaxWeight() and if card users > 0 then (card producers > 0 and productsPerBasket(card users) >= 8) else card producers >= 0;
 	
 	--Operation responsible for removing a user from the delegation
 	--@params user -> User object to remove from the delegation					
@@ -163,9 +163,7 @@ public createBasketsAux : User*Basket*real*real*real ==> ()
 							dcl w : real := 0.5;
 							dcl deletedWeight : real := 0;
 	
-							deletedWeight := producer.removeStock(product, w);
-							if (deletedWeight > 0)
-							then (								
+								
 								if (product not in set variedProducts and v < variety)
 								then (
 									variedProducts := variedProducts union {product};
@@ -173,7 +171,13 @@ public createBasketsAux : User*Basket*real*real*real ==> ()
 								);
 								
 								if(product in set variedProducts)
-								then (bsk.addProduct(product, deletedWeight));
+								then (
+									deletedWeight := producer.removeStock(product, w);
+									if (deletedWeight > 0)
+									then (
+										bsk.addProduct(product, deletedWeight)
+									);
+								);
 								
 								if(v >= variety)
 								then (varietyAchieved := true;);
@@ -200,7 +204,6 @@ public createBasketsAux : User*Basket*real*real*real ==> ()
 									return
 								);
 							);
-						);
 					);
 				);
 			)
@@ -227,10 +230,9 @@ public createBasketsAux : User*Basket*real*real*real ==> ()
 	--@params basketNum -> Number of baskets to create		
 	public pure productsPerBasket: nat ==> nat
 		productsPerBasket(basketNum)==(
-			if (basketNum = 0)
-			then return 8
-			else checkVariety(getProducts(), basketNum, 0);
-		);
+			checkVariety(getProducts(), basketNum, 0);
+		)
+		pre basketNum > 0;
 		
 	--Operation responsible for trying to register users in the pending user list					
 	public checkPendingUsers: () ==> ()
