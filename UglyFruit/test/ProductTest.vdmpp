@@ -15,6 +15,7 @@ private productTest : () ==> ()
 
 public static main: () ==> ()
 		main() == (
+		--Test relating to function utilized in Product Class		
 			new ProductTest().productTest();
 );
 

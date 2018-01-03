@@ -8,14 +8,16 @@ instance variables
 operations
 -- TODO Define operations here
 functions
-	
+	--Function that verifies if user already belongs to a delegation	 
+	--@params user -> User to add to delegation				
 	public validateUser : User -> bool
 	validateUser(user)==(
 	  if (user.delegation = nil) then true
 		else  false
 		);
 		
-		
+	--Function that verifies if producer already belongs to a delegation	 
+	--@params producer -> producer to add to delegation				
 	public validateProducer : Producer -> bool
 	validateProducer(producer)==(
 	  if (producer.delegation = nil) then true

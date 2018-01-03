@@ -13,7 +13,8 @@ instance variables
 	public user: [User] := nil;
 	
 operations
-
+	--Constructor of class Basket
+	--@params sz -> size of basket either small or large
 	public Basket : Size ==> Basket
 		Basket(sz)==(
 			size := sz;
@@ -21,6 +22,9 @@ operations
 		)
 		post size = sz;
 		
+	--Operation responsible for adding a product to a Basket		
+	--@params product -> product to add to basket 
+	--@params w -> weight of product in Kg to add to basket 	
 	public addProduct : Product*real ==> ()
 		addProduct(product, w)==(
 			dcl pds : ProductSet := products;
@@ -50,13 +54,19 @@ operations
 			setWeight(getWeight(products));
 		)
 		post products <> { |-> };
-		
+
+
+	--Operation responsible for setting the weight of a basket
+	--@params w -> weight of basket in Kg 			
 		public setWeight : real ==> ()
 		setWeight(w) == (
 			weight := w;
 			)
 			post weight = w;
 
+	--Operation responsible for getting the weight of a set of products	
+	--@params pds -> set of products whose weight should be calculated 
+	--@return real -> weight of product set in Kg		
 		public getWeight : ProductSet ==> real
 			getWeight(pds)==(
 				dcl tmp : real := 0;

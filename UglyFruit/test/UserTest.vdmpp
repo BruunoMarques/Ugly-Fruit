@@ -76,6 +76,7 @@ private userTest : () ==> ()
 
 public static main: () ==> ()
 		main() == (
+		--Test relating to function utilized in User Class
 			new UserTest().userTest();
 );
 functions
