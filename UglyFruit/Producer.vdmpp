@@ -18,6 +18,7 @@ operations
 	Producer(nm,p)==(
 		name := nm;
 		products := p;
+		initialValues := p;
 		return self;
 	)
 	post name = nm;
@@ -29,7 +30,8 @@ operations
 		)
 		post delegation = del;
 	
-	 public removeDelegation() == (
+	 public removeDelegation: () ==> ()
+	 removeDelegation() ==(
 	 	delegation := nil;
 	 )
 	 pre delegation <> nil

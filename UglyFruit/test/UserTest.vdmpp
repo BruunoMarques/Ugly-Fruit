@@ -22,9 +22,7 @@ instance variables
    basketSizeSmall: Basket`Size := <small>;
    basketSizeLarge: Basket`Size := <large>;   
    products1: Producer`ProductSet := { |-> };
-   
-   
-   
+     
 operations
 private userTest : () ==> ()
 		userTest() == (

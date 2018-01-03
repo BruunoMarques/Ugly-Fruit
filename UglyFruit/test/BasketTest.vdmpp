@@ -10,7 +10,7 @@ instance variables
 	 b1 : Basket := new Basket(basketSizeSmall);
 	 b2 : Basket := new Basket(basketSizeLarge);
 	 p1 : Product := new Product("Morango");
-	 p2 : Product := new Product("Batata doce");	 
+	 p2 : Product := new Product("Batata doce");	  
 	 w : Basket`Weight := 3;
 	 productSetw : Basket`Weight := 20;
    productsSet : Producer`ProductSet := { p1 |-> 10.0, p2 |-> 10.0};	 

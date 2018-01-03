@@ -1,0 +1,52 @@
+class PlatformUtilsTest
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+
+	 productsSet : Producer`ProductSet := {
+      new Product("Morango") |-> 10.0,
+			new Product("Batata doce") |-> 10.0,
+			new Product("Tomate") |-> 15.0,
+			new Product("Pepino")|-> 20,
+ 			new Product("Couve")|-> 20,
+			new Product("Rabanete")|-> 20,
+			new Product("Ameixa")|-> 20,
+			new Product("Ananas")|-> 20};		
+	 
+	 u1 : User := new User("Claudia");
+	 p1 : Producer := new Producer("Diana",productsSet);
+   d1 : Delegation := new Delegation("Delegation1", "Porto", 2);	
+   basketSizeSmall: Basket`Size := <small>;    
+
+operations
+
+private platformUtilsTest : () ==> ()
+		platformUtilsTest() == (
+		
+		--test validateUser
+		UtilsTest`assertTrue(PlatformUtils`validateUser(u1));
+		
+		--test validateProducer
+		UtilsTest`assertTrue(PlatformUtils`validateProducer(p1));
+		
+		--test validateUserFalse
+		d1.registerProducer(p1);
+		d1.registerUser(u1,basketSizeSmall);
+		UtilsTest`assertTrue(PlatformUtils`validateUser(u1) = false);
+		
+		--test validateProducerFalse
+		UtilsTest`assertTrue(PlatformUtils`validateProducer(p1) = false);		
+);
+
+public static main: () ==> ()
+		main() == (
+			new PlatformUtilsTest().platformUtilsTest();
+);
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end PlatformUtilsTest

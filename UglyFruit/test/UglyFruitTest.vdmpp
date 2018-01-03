@@ -10,7 +10,10 @@ operations
 		 main() == (
 			UserTest`main();
 			ProductTest`main();
-			BasketTest`main();			
+			BasketTest`main();
+			ProducerTest`main();	
+			DelegationTest`main();	
+			PlatformUtilsTest`main();											
 		);
 functions
 -- TODO Define functiones here

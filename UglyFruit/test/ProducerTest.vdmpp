@@ -1,0 +1,63 @@
+class ProducerTest
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+   productsSet : Producer`ProductSet := {
+      new Product("Morango") |-> 10.0,
+			new Product("Batata doce") |-> 10.0,
+			new Product("Tomate") |-> 15.0,
+			new Product("Pepino")|-> 20,
+ 			new Product("Couve")|-> 20,
+			new Product("Rabanete")|-> 20,
+			new Product("Ameixa")|-> 20,
+			new Product("Ananas")|-> 20};
+	 p1 : Producer := new Producer("Diana",productsSet);
+	 product1 : Product := new Product("Morango");
+	 product2 : Product := new Product("Batata doce");	 
+	 product3 : Product := new Product("Alface");	 		 
+	 d1 : Delegation := new Delegation("Delegation1", "Porto", 2);
+operations
+
+private producerTest : () ==> ()
+		producerTest() == (
+		
+		--test Contructor
+		UtilsTest`assertTrue(p1.name = "Diana" and p1.products = productsSet);
+		
+		--test setDelegation
+		p1.setDelegation(d1);
+		UtilsTest`assertTrue(p1.delegation = d1);		
+
+		--test removeDelegation
+		p1.removeDelegation();
+		UtilsTest`assertTrue(p1.delegation = nil);				
+
+		--test addProduct		
+		p1.addProduct(product1, 2);
+		p1.addProduct(product1, 1.5);		
+		UtilsTest`assertTrue(product1 in set dom p1.products);
+		d1.registerProducer(p1);
+		p1.addProduct(product2, 1.5);	
+		UtilsTest`assertTrue(product2 in set dom p1.products);
+		
+		--test removeStock
+		UtilsTest`assertTrue(p1.removeStock(product1, 2.0) = 2);		
+		UtilsTest`assertTrue(p1.removeStock(product1, 2.0) = 1.5);							
+		UtilsTest`assertTrue(p1.removeStock(product3, 2.0) = 0);
+
+		--test restockProducts
+		p1.restockProducts();	
+		UtilsTest`assertTrue(p1.products = p1.initialValues);							
+);
+
+public static main:() ==> ()
+		main() == (
+			new ProducerTest().producerTest();
+);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end ProducerTest

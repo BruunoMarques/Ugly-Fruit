@@ -66,15 +66,9 @@ operations
 		)
 		pre PlatformUtils`validateUser(user) and user not in set users
 		post card users <= userCapacity and (user in set users or user in set pendingUsers) and getUsersWeight() <= getMaxWeight() and productsPerBasket(card users) >= 8;
-	
-	public isUserRegistered : User ==> bool
-		isUserRegistered(user)==(
-			if user in set users
-			then return true
-			else return false;
-		);
 		
-	public removeUser(user: User) ==(
+	public removeUser : User ==> ()
+	removeUser(user)==(
 	  user.removeDelegation();
 	  checkPendingUsers();
   	users := users \ {user}
@@ -134,12 +128,13 @@ operations
 		pre users <> {} and producers <> {} and getUsersWeight() <= getMaxWeight() and productsPerBasket(card users) >= 8
 		post userBaskets <> { |-> };
 		
-		public createBasketsAux : User*Basket*real*real*real ==> ()
+public createBasketsAux : User*Basket*real*real*real ==> ()
 			createBasketsAux(user, bsk, minWeight, maxWeight, variety)==(
 				dcl v : real := 0;
 				dcl variedProducts : set of Product := {};
-				
-				while(bsk.weight < minWeight or variety <> v) do (
+				dcl varietyAchieved : bool := false;
+
+				while(bsk.weight < minWeight) do (
 					for all producer in set producers do (
 						for all product in set dom producer.products do (
 							dcl w : real := 0.5;
@@ -147,13 +142,20 @@ operations
 	
 							deletedWeight := producer.removeStock(product, w);
 							if (deletedWeight > 0)
-							then (
-								bsk.addProduct(product, deletedWeight);
+							then (								
+								if (product not in set variedProducts and v < variety)
+								then (
+									variedProducts := variedProducts union {product};
+									v := v + 1;
+								);
 								
-								if (product not in set variedProducts)
-								then (variedProducts := variedProducts union {product}; v := v + 1);
-	
-								if(bsk.weight >= minWeight and bsk.weight <= maxWeight and variety = v)
+								if(product in set variedProducts)
+								then (bsk.addProduct(product, deletedWeight));
+								
+								if(v >= variety)
+								then (varietyAchieved := true;);
+								
+								if(bsk.weight >= minWeight and bsk.weight <= maxWeight and varietyAchieved = true)
 								then (
 
 									if (user in set dom userBaskets)
@@ -181,7 +183,8 @@ operations
 			)
 			pre minWeight > 0 and maxWeight > 0 and variety > 0;
 			
-		public restock() == (
+	public restock : () ==> ()
+	restock() ==(
 			for all producer in set producers do(
 				producer.restockProducts();
 				);
