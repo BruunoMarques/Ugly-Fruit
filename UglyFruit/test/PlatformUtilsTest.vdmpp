@@ -42,6 +42,8 @@ private platformUtilsTest : () ==> ()
 
 public static main: () ==> ()
 		main() == (
+		
+		--Test relating to function utilized in Utils Class		
 			new PlatformUtilsTest().platformUtilsTest();
 );
 

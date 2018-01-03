@@ -21,11 +21,15 @@ instance variables
 	public userBaskets: UserBaskets := { |-> };
 	inv getUsersWeight() <= getMaxWeight();
 	inv card users <= userCapacity;
-	inv card users > 0 => productsPerBasket(card users) >= 8;
+	--inv card users > 0 => productsPerBasket(card users) >= 8;
 	inv card users > 0 => card producers > 0;	
 	
 operations
 
+	--Constructor of class Delegation
+	--@params nm -> Name of delegation
+	--@params ln -> Name of location	
+	--@params uc -> Physical capatiy of delegation to support users		
 	public Delegation : DelegationName*LocationName*nat1 ==> Delegation
 		Delegation(nm,ln,uc)==(
 			name := nm;
@@ -35,6 +39,10 @@ operations
 		)
 		post name = nm and location = ln and userCapacity = uc;
 	
+	
+	--Operation responsible for registering a user to the delegation
+	--@params user -> User object to add to the delegation		
+	--@params basketSize -> Size of the basket small or large					
 	public registerUser : User*Basket`Size ==> ()								-- retorna verdadeiro se o registo do utilizador foi bem sucedido
 		registerUser(user, basketSize)==(
 			dcl tmp : User := new User("tmp");
@@ -67,11 +75,10 @@ operations
 			);
 		)
 		pre PlatformUtils`validateUser(user) and user not in set users
-		post (user in set users or user in set pendingUsers) 
-		and card users <= userCapacity 
-		and getUsersWeight() <= getMaxWeight() 
-		and if card users > 0 then (card producers > 0 and productsPerBasket(card users) >= 8) else card producers >= 0;
-		
+		post card users <= userCapacity and (user in set users or user in set pendingUsers) and getUsersWeight() <= getMaxWeight() and productsPerBasket(card users) >= 8;
+	
+	--Operation responsible for removing a user from the delegation
+	--@params user -> User object to remove from the delegation					
 	public removeUser : User ==> ()
 	removeUser(user)==(
 	  user.removeDelegation();
@@ -81,6 +88,9 @@ operations
   	pre users <> {} and user in set users
   	post user not in set users;
 
+
+	--Operation responsible for registering a producer to the delegation
+	--@params producer -> producer object to add to the delegation		
 	public registerProducer : Producer ==> ()
 		registerProducer(producer)==(
 			producer.setDelegation(self);
@@ -95,7 +105,8 @@ operations
 		)
 		pre producer not in set producers and PlatformUtils`validateProducer(producer)
 		post producers <> {};
-	
+
+	--Operation responsible for getting the products from all the producers in the delegation
 	public pure getProducts : () ==> ProductSet
 		getProducts()==(
 			dcl P : ProductSet := { |-> };
@@ -108,7 +119,8 @@ operations
 			);
 			return P;
 		);
-		
+	
+	--Operation responsible for creating the baskets to deliver to each user registered in the delegation		
 	public createBaskets : () ==> ()
 		createBaskets()==(
 			for all user in set users do (
@@ -125,14 +137,20 @@ operations
 				then createBasketsAux(user, bsk, minWeight, maxWeight, variety)
 				else user.setCancelBasket(false);
 			);
-			IO`print("RESTOCKING WAREHOUSE ON ");
-			IO`println(self.name);
-			IO`println("");
-			restock();
+
+			if ((getrequiredWeight(users) < getMaxWeight()) and productsPerBasket(card users) >= 8) 
+			then 	IO`println("No need to restock")
+			else (IO`println("Restocking delegation stock"); restock())
 		)
 		pre users <> {} and producers <> {} and getUsersWeight() <= getMaxWeight() and productsPerBasket(card users) >= 8
 		post userBaskets <> { |-> };
-		
+	
+	--Auxiliary operation to createBasket
+	--@params user -> Target user of basket		
+	--@params bsk -> Basket to deliver					
+	--@params minWeight -> Minimum weight for basket		
+	--@params maxWeight -> Maxinmum weight for basket	
+	--@params variety -> Required number of different products						
 public createBasketsAux : User*Basket*real*real*real ==> ()
 			createBasketsAux(user, bsk, minWeight, maxWeight, variety)==(
 				dcl v : real := 0;
@@ -144,7 +162,10 @@ public createBasketsAux : User*Basket*real*real*real ==> ()
 						for all product in set dom producer.products do (
 							dcl w : real := 0.5;
 							dcl deletedWeight : real := 0;
-							
+	
+							deletedWeight := producer.removeStock(product, w);
+							if (deletedWeight > 0)
+							then (								
 								if (product not in set variedProducts and v < variety)
 								then (
 									variedProducts := variedProducts union {product};
@@ -152,11 +173,7 @@ public createBasketsAux : User*Basket*real*real*real ==> ()
 								);
 								
 								if(product in set variedProducts)
-								then (
-									deletedWeight := producer.removeStock(product, w);
-									if (deletedWeight > 0)
-									then bsk.addProduct(product, deletedWeight);
-								);
+								then (bsk.addProduct(product, deletedWeight));
 								
 								if(v >= variety)
 								then (varietyAchieved := true;);
@@ -182,34 +199,40 @@ public createBasketsAux : User*Basket*real*real*real ==> ()
 									
 									return
 								);
-
+							);
 						);
 					);
 				);
 			)
 			pre minWeight > 0 and maxWeight > 0 and variety > 0;
 			
+	--Operation responsible for restocking the products of the delegation after the baskets were create (week passed)			
 	public restock : () ==> ()
 	restock() ==(
 			for all producer in set producers do(
 				producer.restockProducts();
 				);
 		);
-	
+	--Operation responsible for getting the maximum weight of products to sustain the user base
 	public pure getMaxWeight : () ==> real
 	getMaxWeight()==
 		getProducerslWeight(producers);
 		
+	--Operation responsible for getting the weight of products to satisfy the current user base
 	public pure getUsersWeight : () ==> real
 	getUsersWeight()==
 		getrequiredWeight(users);
-		
+	
+	--Operation responsible for getting the weight of products to satisfy the current user base		
+	--@params basketNum -> Number of baskets to create		
 	public pure productsPerBasket: nat ==> nat
 		productsPerBasket(basketNum)==(
-			checkVariety(getProducts(), basketNum, 0, 0);
-		)
-		pre basketNum > 0;
+			if (basketNum = 0)
+			then return 8
+			else checkVariety(getProducts(), basketNum, 0);
+		);
 		
+	--Operation responsible for trying to register users in the pending user list					
 	public checkPendingUsers: () ==> ()
 		checkPendingUsers()==(
 			for all user in set pendingUsers do (
@@ -218,12 +241,16 @@ public createBasketsAux : User*Basket*real*real*real ==> ()
 		);
 
 functions		
+	--Operation responsible for getting the weight of all the producer's in the delegation
+	--@params producers -> Producers in delegation		
 	public getProducerslWeight : ProducerSet -> real
 	getProducerslWeight(producers)==(
 	  if producers = {} then 0
 		else let p in set producers in p.getWeight() + getProducerslWeight(producers\{p} ) 
 		);
-			    	            	
+
+	--Operation responsible for getting the required weight to sustain all the users in the delegation
+	--@params users -> Users in delegation					    	            	
 	public getrequiredWeight : UserSet -> real
 	getrequiredWeight(users)==(
 	  if users = {} then 0.0
@@ -231,13 +258,18 @@ functions
 		if u.basketSize = <small> then 4.0 + getrequiredWeight(users\{u})
 		else 8 + getrequiredWeight(users\{u})
 		);
-		
-	public checkVariety : ProductSet*nat*nat*nat -> nat
-		checkVariety(products, basketNum, variety, rest)==(
-		  if products = {|->} then variety + floor (rest/basketNum)  
+
+	--Operation responsible for calculating the variety of products in the required baskets
+	--@params products -> Products in delegation				
+	--@params basketNum -> Number of baskets required
+	--@params variety -> Number of diferent products per basket				
+	--@return variety -> Number of diferent products per basket						
+	public checkVariety : ProductSet*nat*nat -> nat
+		checkVariety(products, basketNum, variety)==(
+		  if products = {|->} then variety   
 			else let p in set dom products in 
-			if products(p) / 0.5 >= basketNum then checkVariety({p} <-: products, basketNum, variety + 1, rest)
-			else checkVariety({p} <-: products, basketNum, variety, rest + floor(products(p) / 0.5)) 
+			if products(p) >= basketNum then checkVariety({p} <-: products, basketNum, variety + 1)
+			else checkVariety({p} <-: products, basketNum, variety) 
 			)
 			pre basketNum > 0;
 		

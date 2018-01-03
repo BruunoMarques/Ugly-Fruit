@@ -14,6 +14,9 @@ instance variables
 	public delegation:[Delegation] := nil;
 		
 operations
+
+	--Constructor of class Producer
+	--@params nm -> name of producer
 	public Producer : ProducerName*ProductSet ==> Producer
 	Producer(nm,p)==(
 		name := nm;
@@ -23,14 +26,15 @@ operations
 	)
 	post name = nm;
 	
-	
+	--Operation responsible for setting a delegation to the producer
+	--@params del -> delegation object producer is joining	
 		public setDelegation : Delegation ==> ()
 		setDelegation(del)==(
 			delegation := del;
 		)
-		pre products <> { |-> }
 		post delegation = del;
 	
+	--Operation that allows to remove a delegation from a producer	
 	 public removeDelegation: () ==> ()
 	 removeDelegation() ==(
 	 	delegation := nil;
@@ -38,6 +42,9 @@ operations
 	 pre delegation <> nil
 	 post delegation = nil;
 	
+	--Operation responsible for adding a product to a producer's stock		
+	--@params product -> product to add to producer stock 
+	--@params weight -> weight of product in Kg to add to stock 		
 	public addProduct : Product*real ==> ()
 	addProduct(product, weight)==(
 		if product in set dom products
@@ -55,7 +62,9 @@ operations
 	pre weight >= 0.5
 	post product in set dom products;
 	
-	
+	--Operation responsible for removing a product from producer's stock		
+	--@params product -> product to remove from producer's stock 
+	--@params weight -> weight of product in Kg to remove
 	public removeStock : Product*real ==> real
 	removeStock(product,weight)==(
 		dcl ret : Weight := 0;
@@ -67,18 +76,23 @@ operations
 			else ((products(product):= (products(product) - weight)); return weight)
 	)
 	pre weight > 0 and products <> { |-> };
-	
+
+	--Operation responsible for restocking the products on a producer's stock after the baskets were create (week passed)		
 	public restockProducts : () ==> ()
 		restockProducts()==(
 			products := initialValues;
 		);
-	
+
+	--Operation responsible for getting the weight of the producer's stock
 	public pure getWeight : () ==> real
 	getWeight()==
 		sumWeight(products);
 		
 
 functions		
+	--Function responsible for adding the weight of the producer's stock
+	--@params products -> set of products whose weight should be calculated 
+	--@return real -> weight of product set in Kg			
 	public sumWeight : ProductSet -> real
 	sumWeight(products)==(
 	  if products = { |-> } then 0

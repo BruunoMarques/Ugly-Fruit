@@ -40,7 +40,8 @@ private basketTest : () ==> ()
 );
 
 public static main: () ==> ()
-		main() == (
+		main() == (	
+		--Test relating to function utilized in Basket Class		
 			new BasketTest().basketTest();
 );
 functions

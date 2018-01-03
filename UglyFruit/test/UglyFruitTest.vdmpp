@@ -8,6 +8,8 @@ instance variables
 operations
 		public static main: () ==> ()
 		 main() == (
+		 
+		-- Index of Tests related to UglyFruit platform		 
 			UserTest`main();
 			ProductTest`main();
 			BasketTest`main();

@@ -11,8 +11,8 @@ instance variables
    d1 : Delegation := new Delegation("Delegation1", "Porto", 2);
    d2 : Delegation := new Delegation("Delegation2", "Lisboa", 20); 
    productsSet : Producer`ProductSet := {
-      new Product("Morango") |-> 10.0,
-			new Product("Batata doce") |-> 10.0,
+      new Product("Morango") |-> 2,
+			new Product("Batata doce") |-> 2,
 			new Product("Tomate") |-> 15.0,
 			new Product("Pepino")|-> 20,
  			new Product("Couve")|-> 20,
@@ -71,18 +71,21 @@ private delegationTest : () ==> ()
 		d2.registerProducer(p4);		
 		d2.registerUser(u4,basketSizeLarge);
 		d2.createBaskets();			
-		UtilsTest`assertTrue(d2.userBaskets <> { |-> });			
+		UtilsTest`assertTrue(d2.userBaskets <> { |-> });												
 		
 	-- test productsPerBasket;
+		UtilsTest`assertTrue(d1.productsPerBasket(0) = 8);		
 		UtilsTest`assertTrue(d1.productsPerBasket(card d1.users) <> 0);		
 		
 	-- test checkVariety;
-		UtilsTest`assertTrue(d1.checkVariety(productsSet, card d1.users, 0, 0) = 8);	
-		UtilsTest`assertTrue(d1.checkVariety({new Product("Kiwi")|-> 0.5}, card d1.users, 0, 0) = 0);		
+		UtilsTest`assertTrue(d1.checkVariety(productsSet, card d1.users, 0) = 8);	
+		UtilsTest`assertTrue(d1.checkVariety({new Product("Kiwi")|-> 0.5}, card d1.users, 0) = 0);		
 );	
 
 public static main: () ==> ()
 		main() == (
+		
+		--Test relating to function utilized in Delegation Class		
 			new DelegationTest().delegationTest();
 );
 

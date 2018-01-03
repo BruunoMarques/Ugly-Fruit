@@ -16,6 +16,8 @@ instance variables
 	
 operations
 
+	--Constructor of class User
+	--@params nm -> name of user
 	public User : Username ==> User
 		User(nm)==(
 			name := nm;
@@ -24,6 +26,8 @@ operations
 		pre len nm <= 15					-- username nao pode ter mais que 15 caracteres
 		post name = nm;
 		
+	--Operation responsible for changing the username
+	--@params us -> name of user		
 	public setUsername : Username ==> ()
 		setUsername(us)==(
 			name := us;
@@ -31,12 +35,17 @@ operations
 		pre len us <= 15
 		post name = us;
 	
+	--Operation responsible for setting a delegation to the user
+	--@params del -> delegation object user is joining			
 	public setDelegation : Delegation ==> ()
 		setDelegation(del)==(
 			delegation := del;
 		)
 		post delegation = del;
 		
+		
+	--Operation responsible for setting the size for the user's basket
+	--@params bs -> Size of the basket small or large					
 	public setBasketSize : Basket`Size ==> ()
 		setBasketSize(bs)==(
 			basketSize := bs;
@@ -44,7 +53,8 @@ operations
 		pre bs = <small> or bs = <large>
 		post basketSize = bs;
 		
-		
+	--Operation updating the value user paid for the baskets
+	--@params bs -> Size of the basket small or large			
 	public setPayingValue : Basket`Size ==> ()
 		setPayingValue(bs)==(
 		receivedBaskets:= receivedBaskets + 1;
@@ -53,21 +63,25 @@ operations
 		)
 		pre bs = <small> or bs = <large>;
 		
-		
+	--Operation that allows for the user to switch delegations
+	--@params d3 -> New delegation object				
+	--@params bs -> Size of the basket small or large					
 	public delegationChange : Delegation*Basket`Size ==> ()	
 		delegationChange(de,bs) ==(
 		delegation.removeUser(self);
 		de.registerUser(self, bs);
 	 )
 	 pre delegation <> nil;
-	 
+
+	--Operation that allows to remove a delegation from a user
 	 public removeDelegation : () ==> ()
 	 removeDelegation() ==(
 	 	delegation := nil;
 	 )
 	 pre delegation <> nil
 	 post delegation = nil;
-	 
+	
+	--Operation that updates the cancel basket option for the user	 
 	 public setCancelBasket : bool ==> ()
 	 setCancelBasket(val)==(
 	 	cancelBasket := val;
