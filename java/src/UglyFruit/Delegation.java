@@ -385,7 +385,35 @@ public class Delegation {
     }
   }
 
-  public String toString() {
+  public String getName() {
+	return name;
+}
+
+public Number getUserCapacity() {
+	return userCapacity;
+}
+
+public String getLocation() {
+	return location;
+}
+
+public VDMSet getUsers() {
+	return users;
+}
+
+public VDMSet getProducers() {
+	return producers;
+}
+
+public VDMSet getPendingUsers() {
+	return pendingUsers;
+}
+
+public VDMMap getUserBaskets() {
+	return userBaskets;
+}
+
+public String toString() {
 
     return "Delegation{"
         + "name := "

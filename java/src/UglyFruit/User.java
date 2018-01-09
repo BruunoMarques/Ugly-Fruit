@@ -64,7 +64,31 @@ public class User {
     cancelBasket = val;
   }
 
-  public User() {}
+  public String getName() {
+	return name;
+}
+
+public Delegation getDelegation() {
+	return delegation;
+}
+
+public Object getBasketSize() {
+	return basketSize;
+}
+
+public Number getReceivedBaskets() {
+	return receivedBaskets;
+}
+
+public Boolean getCancelBasket() {
+	return cancelBasket;
+}
+
+public Number getPaidValue() {
+	return paidValue;
+}
+
+public User() {}
 
   public String toString() {
 
