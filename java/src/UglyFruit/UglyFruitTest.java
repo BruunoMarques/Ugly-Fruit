@@ -1,27 +1,21 @@
 package UglyFruit;
 
+import java.io.IOException;
 import java.util.*;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class UglyFruitTest {
 	  public static ArrayList<Delegation> delegations = new ArrayList<Delegation>();
-	  public static ArrayList<User> users = new ArrayList<User>();
 	  
 	  public static void main(String[] args) {
 		  Scanner scanner=new Scanner(System.in);
 		  boolean exit = false;
-		  
-		  System.out.println("UGLY FRUIT\n");
-		  
+		  		  
 		  User u1 = new User("Claudia");
 		  User u2 = new User("Margarida");
 		  User u3 = new User("Bruno");
 		  User u4 = new User("Rita");
-		  users.add(u1);
-		  users.add(u2);
-		  users.add(u3);
-		  users.add(u4);
 		  
 		  Delegation d1 = new Delegation("Delegation1", "Porto", 2L);
 		  Delegation d2 = new Delegation("Delegation2", "Lisboa", 20L);
@@ -36,21 +30,23 @@ public class UglyFruitTest {
 		          new Maplet(new Product("Ameixa"), 20L),
 		          new Maplet(new Product("Ananas"), 20L));
 		  Producer p1 = new Producer("Diana", Utils.copy(productsSet));
-		  Producer p2 = new Producer("Manuel", Utils.copy(productsSet));
-		  Producer p3 = new Producer("Carlos", MapUtil.map(new Maplet(new Product("Kiwi"), 40L)));
-		  Producer p4 = new Producer("Ricardo", Utils.copy(productsSet));
+		  Producer p2 = new Producer("Ricardo", Utils.copy(productsSet));
 		  Object basketSizeSmall = UglyFruit.quotes.smallQuote.getInstance();
 		  Object basketSizeLarge = UglyFruit.quotes.largeQuote.getInstance();
 		  
 		  d1.registerProducer(p1);
+		  d2.registerProducer(p2);
 		  d1.registerUser(u1, basketSizeSmall);
 		  d1.registerUser(u2, basketSizeSmall);
 		  d1.registerUser(u3, basketSizeSmall);
+		  
 		  delegations.add(d1);
 		  delegations.add(d2);
 		  System.out.println("");
 		  
 		  while (!exit) {
+			  System.out.flush();  
+			  System.out.println("UGLY FRUIT\n");
 			  System.out.println("0 : Exit");
 			  System.out.println("1 : Create Delegation");
 			  System.out.println("2 : Manage Delegations");
@@ -131,7 +127,7 @@ public class UglyFruitTest {
 	  }else{ 
 		  for(int i = 0; i < delegations.size(); i++) {
 			  int displayedChoice = i+1;
-			  System.out.println(displayedChoice + " : name -> " + delegations.get(i).getName());
+			  System.out.println(displayedChoice + " : name -> " + delegations.get(i).getName() + " ; No. producers: " + delegations.get(i).getProducers().size() + " ; No. of users registered: " + delegations.get(i).getUsers().size());
 		  }
 		  System.out.println("");
 		  
@@ -170,17 +166,15 @@ public class UglyFruitTest {
 	  System.out.println("Name: " + del.getName());
 	  System.out.println("Location: " + del.getLocation());
 	  System.out.println("User capacity: " + del.getUserCapacity());
-	  
-	  for (Iterator iterator_5 = del.getUsers().iterator(); iterator_5.hasNext(); ) {
-		  User u = (User) iterator_5.next();
-		  System.out.println("Name: " + u.getName() + " | Paid value: " + u.getPaidValue());
-	  }
+	  System.out.println("");
 	  
 	  while (!exit) {
 		  System.out.println("0 : Exit");
 		  System.out.println("1 : Register User");
 		  System.out.println("2 : Register Producer");
-		  System.out.println("3 : Create Baskets");
+		  System.out.println("3 : See Users");
+		  System.out.println("4 : See Producers");
+		  System.out.println("5 : Create Baskets");
 		  System.out.print("Choice: ");
 		  String choice = scanner.nextLine();
 		  
@@ -195,6 +189,10 @@ public class UglyFruitTest {
 				  registerProducer(del);
 				  break;
 			  case "3":
+				  seeUsers(del);
+			  case "4":
+				  seeProducers(del);
+			  case "5":
 				  createBaskets(del);
 				  break;
 			  default:
@@ -207,44 +205,117 @@ public class UglyFruitTest {
   public static void registerUser(Delegation del) {
 	  Scanner scanner=new Scanner(System.in);
 	  boolean exit = false;
-	  System.out.print("");
+	  System.out.println("");
 	  
 	  while (!exit) {
 		  System.out.print("Name: ");
 		  String name = scanner.nextLine();
+		  boolean invalid = false;
 		  
-		  exit = true;
-		  
-		  /*if(alreadyExists) {		  
-			  System.out.println("A delegation with that name already exists. Try again.");
+		  if(name.length() > 15) {
+			  System.out.println("An username cannot have more than 15 characters. Try again.");
 		  } else {
-			  System.out.print("Location: ");
-			  String location = scanner.nextLine();
+			  boolean invalidUser = false;
 			  
-			  System.out.print("User capacity (integer): ");
-			  String uc = scanner.nextLine();
-			  int userCapacity = -1;
-			  boolean invalid = false;
-			  
-			  try {
-				    userCapacity = Integer.parseInt(uc);
-			  } catch (NumberFormatException e) {
-			    System.out.println("Invalid input! Try again.\n");
-			    invalid = true;
+			  for (Iterator iterator_5 = del.getUsers().iterator(); iterator_5.hasNext(); ) {
+				  User u = (User) iterator_5.next();
+				  if (u.getName().equals(name)) {
+					  invalidUser = true;
+					  System.out.println("An user of that name already exists on delegation" + del.getName() + ". Try again.");
+					  break;
+				  }
 			  }
 			  
-			  if(userCapacity < 1 && !invalid) {
-				  System.out.println("User capacity must bigger than zero. Try again.\n");
-			  } else if (!invalid){
-					  Delegation del = new Delegation(name, location, userCapacity);
-					  delegations.add(del);
+			  for (Iterator iterator_5 = del.getPendingUsers().iterator(); iterator_5.hasNext(); ) {
+				  User u = (User) iterator_5.next();
+				  if (u.getName().equals(name)) {
+					  invalidUser = true;
+					  System.out.println("An user of that name already exists on delegation" + del.getName() + ". Try again.");
+					  break;
+				  }
+			  }
+			  
+			  if(!invalidUser) {
+				  User user = new User(name);
+				  if(!PlatformUtils.validateUser(user)) {
+					  System.out.println("That user is already registered on another delegation. Try again.");
+				  } else {
+					  System.out.print("Basket Size (Small or Large): ");
+					  String basketSize = scanner.nextLine();
+					  basketSize = basketSize.toUpperCase();
+					  Object basketSizeSmall = UglyFruit.quotes.smallQuote.getInstance();
+					  Object basketSizeLarge = UglyFruit.quotes.largeQuote.getInstance();
 					  
-					  System.out.println("Delegation " + name + " created.\n");
+					  switch(basketSize) {
+						  case "S":
+							  del.registerUser(user, basketSizeSmall);
+							  break;
+						  case "SMALL":
+							  del.registerUser(user, basketSizeSmall);
+							  break;
+						  case "L":
+							  del.registerUser(user, basketSizeLarge);
+							  break;
+						  case "LARGE":
+							  del.registerUser(user, basketSizeLarge);
+							  break;
+						  default:
+							  System.out.println("Invalid Input! Try again.\n");					  	
 					  
+					  }
+					  System.out.println("");
 					  exit = true;
+				  }
 			  }
-		  }*/
+			  
+		  }
 	  }	  
+  }
+  
+  public static void seeUsers(Delegation del) {
+	  Object basketSizeSmall = UglyFruit.quotes.smallQuote.getInstance();
+	  
+	  if(!del.getUsers().isEmpty()) {
+		  System.out.println("\nList of registered users:");
+		  for (Iterator iterator_5 = del.getUsers().iterator(); iterator_5.hasNext(); ) {
+			  User u = (User) iterator_5.next();
+			  System.out.println("Name: " + u.getName());
+			  System.out.println("Delegation: " + u.getDelegation().getName());
+			  System.out.println("Paid value: " + u.getPaidValue());
+			  
+			  if (basketSizeSmall.equals(u.getBasketSize()))
+				  System.out.println("Basket Size: Small");
+			  else System.out.println("Basket Size: Large");
+			  
+			  System.out.println("No. of baskets received: " + u.getReceivedBaskets());
+			  
+			  if (u.getCancelBasket())
+				  System.out.println("Cancel Basket: True");
+			  else System.out.println("Cancel Basket: False");
+		  }
+		  System.out.println("");
+	  } else {
+		  System.out.println("The delegation " + del.getName() + " has no users registered.\n");
+	  }
+	  
+	  if(!del.getPendingUsers().isEmpty()) {
+		  System.out.println("\nList of pending users:");
+		  for (Iterator iterator_5 = del.getPendingUsers().iterator(); iterator_5.hasNext(); ) {
+			  User u = (User) iterator_5.next();
+			  System.out.println("Name: " + u.getName());
+			  
+			  if (basketSizeSmall.equals(u.getBasketSize()))
+				  System.out.println("Basket Size: Small");
+			  else System.out.println("Basket Size: Large");
+		  }
+		  System.out.println("");
+	  } else {
+		  System.out.println("The delegation " + del.getName() + " has no pending users.\n");
+	  }
+  }
+  
+  public static void seeProducers(Delegation del) {
+	  
   }
   
   public static void registerProducer(Delegation del) {
