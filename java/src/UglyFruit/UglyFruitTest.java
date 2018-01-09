@@ -6,6 +6,7 @@ import org.overture.codegen.runtime.*;
 @SuppressWarnings("all")
 public class UglyFruitTest {
 	  public static ArrayList<Delegation> delegations = new ArrayList<Delegation>();
+	  public static ArrayList<User> users = new ArrayList<User>();
 	  
 	  public static void main(String[] args) {
 		  Scanner scanner=new Scanner(System.in);
@@ -17,6 +18,11 @@ public class UglyFruitTest {
 		  User u2 = new User("Margarida");
 		  User u3 = new User("Bruno");
 		  User u4 = new User("Rita");
+		  users.add(u1);
+		  users.add(u2);
+		  users.add(u3);
+		  users.add(u4);
+		  
 		  Delegation d1 = new Delegation("Delegation1", "Porto", 2L);
 		  Delegation d2 = new Delegation("Delegation2", "Lisboa", 20L);
 		  VDMMap productsSet =
@@ -157,6 +163,9 @@ public class UglyFruitTest {
   }
   
   public static void delegationOptions(Delegation del) {
+	  Scanner scanner=new Scanner(System.in);
+	  boolean exit = false;
+	  
 	  System.out.println("");
 	  System.out.println("Name: " + del.getName());
 	  System.out.println("Location: " + del.getLocation());
@@ -164,9 +173,86 @@ public class UglyFruitTest {
 	  
 	  for (Iterator iterator_5 = del.getUsers().iterator(); iterator_5.hasNext(); ) {
 		  User u = (User) iterator_5.next();
-		  System.out.println("Name: " + u.getName() + " | Paid:" + u.getPaidValue());
+		  System.out.println("Name: " + u.getName() + " | Paid value: " + u.getPaidValue());
 	  }
-	  System.out.println("");	  
+	  
+	  while (!exit) {
+		  System.out.println("0 : Exit");
+		  System.out.println("1 : Register User");
+		  System.out.println("2 : Register Producer");
+		  System.out.println("3 : Create Baskets");
+		  System.out.print("Choice: ");
+		  String choice = scanner.nextLine();
+		  
+		  switch(choice) {
+			  case "0":
+				  exit = true;
+				  break;
+			  case "1":
+				  registerUser(del);
+				  break;
+			  case "2":
+				  registerProducer(del);
+				  break;
+			  case "3":
+				  createBaskets(del);
+				  break;
+			  default:
+				  System.out.println("Invalid Input! Try again.\n");	
+		  }	  
+	}	  
+	System.out.println("");	  
+  }
+  
+  public static void registerUser(Delegation del) {
+	  Scanner scanner=new Scanner(System.in);
+	  boolean exit = false;
+	  System.out.print("");
+	  
+	  while (!exit) {
+		  System.out.print("Name: ");
+		  String name = scanner.nextLine();
+		  
+		  exit = true;
+		  
+		  /*if(alreadyExists) {		  
+			  System.out.println("A delegation with that name already exists. Try again.");
+		  } else {
+			  System.out.print("Location: ");
+			  String location = scanner.nextLine();
+			  
+			  System.out.print("User capacity (integer): ");
+			  String uc = scanner.nextLine();
+			  int userCapacity = -1;
+			  boolean invalid = false;
+			  
+			  try {
+				    userCapacity = Integer.parseInt(uc);
+			  } catch (NumberFormatException e) {
+			    System.out.println("Invalid input! Try again.\n");
+			    invalid = true;
+			  }
+			  
+			  if(userCapacity < 1 && !invalid) {
+				  System.out.println("User capacity must bigger than zero. Try again.\n");
+			  } else if (!invalid){
+					  Delegation del = new Delegation(name, location, userCapacity);
+					  delegations.add(del);
+					  
+					  System.out.println("Delegation " + name + " created.\n");
+					  
+					  exit = true;
+			  }
+		  }*/
+	  }	  
+  }
+  
+  public static void registerProducer(Delegation del) {
+	  
+  }
+  
+  public static void createBaskets(Delegation del) {
+	  
   }
 
   public UglyFruitTest() {}
