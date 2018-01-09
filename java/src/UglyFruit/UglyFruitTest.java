@@ -325,7 +325,27 @@ public class UglyFruitTest {
   }
   
   public static void seeProducers(Delegation del) {
-	  
+	  if(!del.getProducers().isEmpty()) {
+		  System.out.println("\nList of registered producers:");
+		  for (Iterator iterator_5 = del.getProducers().iterator(); iterator_5.hasNext(); ) {
+			  Producer p = (Producer) iterator_5.next();
+			  System.out.println("Name: " + p.getName());
+			  System.out.println("Delegation: " + p.getDelegation().getName());
+
+			  if (p.getProducts().isEmpty()) {
+				  System.out.println("Producer doesn't have any products");
+			  } else {
+				  for (Iterator iterator_1 = MapUtil.dom(p.getProducts()).iterator(); iterator_1.hasNext(); ) {
+					  Product pr = (Product) iterator_1.next();
+					  Number w = (Number) Utils.get(p.getProducts(), pr);
+
+					  System.out.println("Product " + pr.getName() + " -> Weight: " + w);
+				  }
+			  }
+		  }
+	  }else {
+		  System.out.println("The delegation " + del.getName() + " has no producers registered.\n");
+	  }
   }
   
   public static void registerProducer(Delegation del) {
