@@ -51,8 +51,8 @@ public class Delegation {
       if (!(SetUtil.inSet(user, pendingUsers))) {
         user.setBasketSize(basketSize);
         pendingUsers = SetUtil.union(Utils.copy(pendingUsers), SetUtil.set(user));
-        IO.print("Pending user ");
-        IO.println(user.name);
+        System.out.print("Pending user ");
+        System.out.println(user.name);
       }
 
     } else {
@@ -63,10 +63,10 @@ public class Delegation {
       user.setBasketSize(basketSize);
       user.setDelegation(this);
       users = SetUtil.union(Utils.copy(users), SetUtil.set(user));
-      IO.print("Registered user ");
-      IO.print(user.name);
-      IO.print(" on delegation ");
-      IO.println(this.name);
+      System.out.print("Registered user ");
+      System.out.print(user.name);
+      System.out.print(" on delegation ");
+      System.out.println(this.name);
     }
   }
 
@@ -81,10 +81,10 @@ public class Delegation {
 
     producer.setDelegation(this);
     producers = SetUtil.union(Utils.copy(producers), SetUtil.set(producer));
-    IO.print("Registered producer ");
-    IO.print(producer.name);
-    IO.print(" on delegation ");
-    IO.println(this.name);
+    System.out.print("Registered producer ");
+    System.out.print(producer.name);
+    System.out.print(" on delegation ");
+    System.out.println(this.name);
     checkPendingUsers();
   }
 
@@ -149,9 +149,9 @@ public class Delegation {
     }
 
     if (andResult_13) {
-      IO.println("No need to restock");
+    	System.out.println("No need to restock\n");
     } else {
-      IO.println("Restocking delegation stock");
+    	System.out.println("Restocking delegation stock\n");
       restock();
     }
   }
@@ -231,18 +231,15 @@ public class Delegation {
               }
 
               if (Utils.equals(user.basketSize, UglyFruit.quotes.smallQuote.getInstance())) {
-                IO.print("Small ");
+                System.out.print("Small ");
               } else {
-                IO.print("Large ");
+            	  System.out.print("Large ");
               }
 
-              IO.print("basket created for user ");
-              IO.print(user.name);
-              IO.print(" on delegation ");
-              IO.println(this.name);
-              IO.println("Basket contents: ");
-              IO.println(bsk);
-              IO.println("");
+              System.out.print("basket created for user ");
+              System.out.print(user.name);
+              System.out.print(" on delegation ");
+              System.out.println(this.name);
               return;
             }
           }

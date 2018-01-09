@@ -7,7 +7,8 @@ import org.overture.codegen.runtime.*;
 @SuppressWarnings("all")
 public class UglyFruitTest {
 	  public static ArrayList<Delegation> delegations = new ArrayList<Delegation>();
-	  
+	  public static ArrayList<User> users = new ArrayList<User>();
+	  public static ArrayList<Producer> producers = new ArrayList<Producer>();
 	  public static void main(String[] args) {
 		  Scanner scanner=new Scanner(System.in);
 		  boolean exit = false;
@@ -17,12 +18,17 @@ public class UglyFruitTest {
 		  User u3 = new User("Bruno");
 		  User u4 = new User("Rita");
 		  
+		  users.add(u1);
+		  users.add(u2);
+		  users.add(u3);
+		  users.add(u4);
+		  
 		  Delegation d1 = new Delegation("Delegation1", "Porto", 2L);
 		  Delegation d2 = new Delegation("Delegation2", "Lisboa", 20L);
 		  VDMMap productsSet =
 		      MapUtil.map(
-		          new Maplet(new Product("Morango"), 2L),
-		          new Maplet(new Product("Batata doce"), 2L),
+		          new Maplet(new Product("Morango"), 9L),
+		          new Maplet(new Product("Batata doce"), 20L),
 		          new Maplet(new Product("Tomate"), 15.0),
 		          new Maplet(new Product("Pepino"), 20L),
 		          new Maplet(new Product("Couve"), 20L),
@@ -31,13 +37,17 @@ public class UglyFruitTest {
 		          new Maplet(new Product("Ananas"), 20L));
 		  Producer p1 = new Producer("Diana", Utils.copy(productsSet));
 		  Producer p2 = new Producer("Ricardo", Utils.copy(productsSet));
+		  
+		  producers.add(p1);
+		  producers.add(p2);
+		  
 		  Object basketSizeSmall = UglyFruit.quotes.smallQuote.getInstance();
 		  Object basketSizeLarge = UglyFruit.quotes.largeQuote.getInstance();
 		  
 		  d1.registerProducer(p1);
 		  d2.registerProducer(p2);
 		  d1.registerUser(u1, basketSizeSmall);
-		  d1.registerUser(u2, basketSizeSmall);
+		  d1.registerUser(u2, basketSizeLarge);
 		  d1.registerUser(u3, basketSizeSmall);
 		  
 		  delegations.add(d1);
@@ -235,6 +245,7 @@ public class UglyFruitTest {
 				  }
 			  }
 			  
+			  
 			  if(!invalidUser) {
 				  User user = new User(name);
 				  if(!PlatformUtils.validateUser(user)) {
@@ -290,10 +301,9 @@ public class UglyFruitTest {
 			  System.out.println("No. of baskets received: " + u.getReceivedBaskets());
 			  
 			  if (u.getCancelBasket())
-				  System.out.println("Cancel Basket: True");
-			  else System.out.println("Cancel Basket: False");
+				  System.out.println("Cancel Basket: True\n");
+			  else System.out.println("Cancel Basket: False\n");
 		  }
-		  System.out.println("");
 	  } else {
 		  System.out.println("The delegation " + del.getName() + " has no users registered.\n");
 	  }
@@ -319,11 +329,100 @@ public class UglyFruitTest {
   }
   
   public static void registerProducer(Delegation del) {
-	  
+	  Scanner scanner=new Scanner(System.in);
+	  boolean exit = false;
+	  System.out.print("");
+
+	  while (!exit) {
+		  System.out.print("Name: ");
+		  String name = scanner.nextLine();
+
+		  boolean existing = false;
+
+		  for(int i = 0; i < producers.size(); i++) {
+			  if (producers.get(i).getName().equals(name))
+				  existing = true;
+		  }
+		  System.out.println("");
+
+		  exit = true;
+
+		  if(existing) {
+			  System.out.println("A producer with that name already exists. Try again.");
+		  } else {
+			  VDMMap EmptyProductsSet = MapUtil.map();
+		  	Producer p = new Producer(name, Utils.copy(EmptyProductsSet));
+
+
+		  	boolean finished = false;
+			  System.out.println("Insert the products you wish to prodvide the platform with");
+
+		  	while (!finished){
+				System.out.print("Insert Product Name: ");
+				String productname = scanner.nextLine();
+
+				System.out.print("Insert Product ammount: ");
+				String ammount = scanner.nextLine();
+				int	realAmmount;
+				boolean invalid = false;
+					try {
+						realAmmount = Integer.parseInt(ammount);
+						p.addProduct(new Product(productname),realAmmount);
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid input! Try again.\n");
+						invalid = true;
+					}
+
+					System.out.print("If finished press 0");
+					String finish = scanner.nextLine() ;
+					if (finish.equals("0")){
+						del.registerProducer(p);
+						finished = true;
+					}
+			}
+		  }
+	  }
   }
   
   public static void createBaskets(Delegation del) {
+	  Object basketSizeSmall = UglyFruit.quotes.smallQuote.getInstance();
 	  
+	  if(del.getUsers().isEmpty()) {
+		  System.out.println("There are no registered users on " + del.getName() + "!");
+		  return;
+	  }
+	  
+	  if (del.getProducers().isEmpty()) {
+		  System.out.println("There are no registered producers on " + del.getName() + "!");
+		  return;
+	  }
+	  
+	  if (!(del.getrequiredWeight(Utils.copy(del.getUsers())).doubleValue() < del.getMaxWeight().doubleValue())) {
+		  System.out.println("Not enough weight to fill the baskets.");
+		  return;
+	  }
+	  
+	  if (del.productsPerBasket(del.getUsers().size()).longValue() < 8L) {
+		  System.out.println("Not enough variety to fill the baskets.");
+		  return;
+	  }
+		  del.createBaskets();
+		  
+		for (Iterator iterator_5 = MapUtil.dom(del.getUserBaskets()).iterator(); iterator_5.hasNext(); ) {
+		    User u = (User) iterator_5.next();
+		    Basket b = (Basket) Utils.get(del.getUserBaskets(), u);
+		    
+		    System.out.println("Basket for user " + u.getName() + " in delegation " + del.getName());
+		    
+		    for (Iterator iterator_1 = MapUtil.dom(b.getProducts()).iterator(); iterator_1.hasNext(); ) {
+		        Product p = (Product) iterator_1.next();
+		        Number w = (Number) Utils.get(b.getProducts(), p);
+		        
+		        System.out.println("Product " + p.getName() + " -> Weight: " + w);
+		      }
+		    System.out.println("");
+		  }
+		  
   }
 
   public UglyFruitTest() {}

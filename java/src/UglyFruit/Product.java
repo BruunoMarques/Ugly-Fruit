@@ -17,8 +17,13 @@ public class Product {
 
     cg_init_Product_1(nm);
   }
+  
 
-  public Product() {}
+  public String getName() {
+	return name;
+}
+
+public Product() {}
 
   public String toString() {
 

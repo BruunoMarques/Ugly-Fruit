@@ -124,7 +124,24 @@ public class Producer {
     }
   }
 
-  public String toString() {
+  
+  public String getName() {
+	return name;
+}
+
+public VDMMap getProducts() {
+	return products;
+}
+
+public VDMMap getInitialValues() {
+	return initialValues;
+}
+
+public Delegation getDelegation() {
+	return delegation;
+}
+
+public String toString() {
 
     return "Producer{"
         + "name := "

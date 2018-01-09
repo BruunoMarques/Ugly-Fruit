@@ -73,8 +73,26 @@ public class Basket {
     }
     return tmp;
   }
+ 
 
-  public Basket() {}
+
+  public Object getSize() {
+	return size;
+}
+
+public Number getWeight() {
+	return weight;
+}
+
+public VDMMap getProducts() {
+	return products;
+}
+
+public User getUser() {
+	return user;
+}
+
+public Basket() {}
 
   public String toString() {
 
