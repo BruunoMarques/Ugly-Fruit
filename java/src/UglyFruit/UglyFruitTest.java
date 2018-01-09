@@ -200,8 +200,10 @@ public class UglyFruitTest {
 				  break;
 			  case "3":
 				  seeUsers(del);
+				  break;
 			  case "4":
 				  seeProducers(del);
+				  break;
 			  case "5":
 				  createBaskets(del);
 				  break;
@@ -231,7 +233,7 @@ public class UglyFruitTest {
 				  User u = (User) iterator_5.next();
 				  if (u.getName().equals(name)) {
 					  invalidUser = true;
-					  System.out.println("An user of that name already exists on delegation" + del.getName() + ". Try again.");
+					  System.out.println("An user of that name already exists on delegation " + del.getName() + ". Try again.");
 					  break;
 				  }
 			  }
@@ -240,9 +242,17 @@ public class UglyFruitTest {
 				  User u = (User) iterator_5.next();
 				  if (u.getName().equals(name)) {
 					  invalidUser = true;
-					  System.out.println("An user of that name already exists on delegation" + del.getName() + ". Try again.");
+					  System.out.println("An user of that name already exists on delegation " + del.getName() + ". Try again.");
 					  break;
 				  }
+			  }
+			  
+			  for(int i = 0; i < users.size(); i++) {
+				  if(users.get(i).getName().equals(name)) {
+					  invalidUser = true;
+					  System.out.println("An user of that name already exists on the platform. Try again.");
+					  break;					  
+				  }  
 			  }
 			  
 			  
@@ -346,6 +356,7 @@ public class UglyFruitTest {
 	  }else {
 		  System.out.println("The delegation " + del.getName() + " has no producers registered.\n");
 	  }
+	  System.out.println("");
   }
   
   public static void registerProducer(Delegation del) {
@@ -432,13 +443,21 @@ public class UglyFruitTest {
 		    User u = (User) iterator_5.next();
 		    Basket b = (Basket) Utils.get(del.getUserBaskets(), u);
 		    
-		    System.out.println("Basket for user " + u.getName() + " in delegation " + del.getName());
+		    u.setPayingValue(u.getBasketSize());
+		    
+		    if(u.getBasketSize().equals(basketSizeSmall))
+		    	System.out.print("Small (3-4kg)");
+		    else System.out.print("Large (6-8kg)");
+		    
+		    System.out.println(" basket for user " + u.getName() + " with weight " + b.getWeight());
+		    int i = 0;
 		    
 		    for (Iterator iterator_1 = MapUtil.dom(b.getProducts()).iterator(); iterator_1.hasNext(); ) {
 		        Product p = (Product) iterator_1.next();
 		        Number w = (Number) Utils.get(b.getProducts(), p);
+		        i++;
 		        
-		        System.out.println("Product " + p.getName() + " -> Weight: " + w);
+		        System.out.println(i + ": Product " + p.getName() + " -> Weight: " + w);
 		      }
 		    System.out.println("");
 		  }
